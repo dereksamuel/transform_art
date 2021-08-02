@@ -1,0 +1,75 @@
+:root {
+  /* ----------------- FONTS ----------------- */
+
+  /* PARA PARRAGRAPHS AND TITLES */
+  --font-1: "Noto Sans", sans-serif;
+  /* HEADER FOOTER AND THELINKS */
+  --font-2: "Open Sans", sans-serif;;
+
+  /* ----------------- COLORS ----------------- */
+
+  /* BACKGROUNDS */
+  --color-dark: #2A3B38;
+  --color-light: #F1F1F1;
+  --color-light-gray-2: #F2F2F2;
+  /* SECONDARY */
+  --color-light_gray: #DCDBDB;
+  /* PRIMARY */
+  --color-primary: #2599B1;
+  --color-secondary: #71E2DA;
+  --color-radioactive: #F5865C;
+  --color-white: #f5fffe;
+  /* BOOLEANS */
+  --color-bad: #F55C5C;
+  --color-good: #6aecb6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-1);
+  background-color: var(--color-light);
+}
+
+p {
+  font-size: 14px;
+}
+
+a {
+  font-family: var(--font-2);
+}
+
+.badge {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.badge_orange {
+  position: absolute;
+  top: 0;
+  color: var(--color-light);
+  right: 30px;
+  background-color: var(--color-radioactive);
+  font-weight: bold;
+}
+
+#live_container {
+  height: calc(100vh - 139.95px);
+}
+
+.Login {
+  background: transparent linear-gradient(180deg, #71E2DA 0%, #2599B1 100%) 0% 0% no-repeat padding-box;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
