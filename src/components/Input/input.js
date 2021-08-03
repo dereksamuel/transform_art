@@ -13,15 +13,15 @@ export const Label = styled.label`
     font-family: var(--font-1);
     outline: none;
     width: 100%;
-    border-radius: 0px 12px 12px 0px;
+    /* border-radius: 12px; */
     color: var(--color-dark);
     padding: 1rem;
     transition: 0.2s all;
   }
 
-  & input:focus {
+  /* & input:focus ~ label {
     border: 1px solid var(--color-secondary);
-  }
+  } */
 
   & input::placeholder {
     color: gray;

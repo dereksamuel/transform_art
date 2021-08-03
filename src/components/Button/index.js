@@ -3,12 +3,21 @@ import styled from "@emotion/styled";
 
 const buttonThemes = {
   "primary": css`
-    background: transparent linear-gradient(180deg, #71E2DA 0%, #2599B1 100%) 0% 0% no-repeat padding-box;
+    background: transparent linear-gradient(180deg, #94e0db 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
   `,
   "secondary": css`
-    background: transparent linear-gradient(180deg, #F55C5C 0%, #F5865C 100%) 0% 0% no-repeat padding-box;
+    background: transparent linear-gradient(180deg, #f37070 0%, var(--color-radioactive) 100%) 0% 0% no-repeat padding-box;
     color: var(--color-light);
     font-size: 14px;
+    box-shadow: 0px 0px 40px var(--color-dark);
+    transition: 0.1s all;
+    /* border: 1px solid var(--color-primary); */
+    &:hover {
+      transform: scale(1.01);
+    }
+    &:focus {
+      transform: scale(0.98);
+    }
   `,
   "dark": css`
     background: transparent linear-gradient(180deg, #3B403F 0%, #111100 100%) 0% 0% no-repeat padding-box;
@@ -24,9 +33,10 @@ export const ButtonComponents = styled.button`
   font-family: var(--font-2);
   cursor: pointer;
   border: none;
+  outline: none;
   border-radius: 5px;
   padding: 15px;
-  background: transparent linear-gradient(180deg, #71E2DA 0%, #2599B1 100%) 0% 0% no-repeat padding-box;
+  background: transparent linear-gradient(180deg, #94e0db 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
   &:disabled {
     opacity: 0.58;
   }

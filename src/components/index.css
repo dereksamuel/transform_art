@@ -15,13 +15,13 @@
   /* SECONDARY */
   --color-light_gray: #DCDBDB;
   /* PRIMARY */
-  --color-primary: #2599B1;
-  --color-secondary: #71E2DA;
-  --color-radioactive: #F5865C;
-  --color-white: #f5fffe;
+  --color-primary: #50a1b1;
+  --color-secondary: #94e0db;
+  --color-radioactive: #db8464;
+  --color-white: #e9f3f2;
   /* BOOLEANS */
-  --color-bad: #F55C5C;
-  --color-good: #6aecb6;
+  --color-bad: #f37070;
+  --color-good: #82ebbf;
 }
 
 * {
@@ -67,7 +67,7 @@ a {
 }
 
 .Login {
-  background: transparent linear-gradient(180deg, #71E2DA 0%, #2599B1 100%) 0% 0% no-repeat padding-box;
+  background: transparent linear-gradient(180deg, #97e2c5 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
   height: 100%;
   display: flex;
   justify-content: center;

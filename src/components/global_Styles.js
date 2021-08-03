@@ -9,7 +9,7 @@ export const NavBar = styled.section`
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
+    max-width: 1300px;
     margin: auto;
   }
 
@@ -108,7 +108,8 @@ export const NavBar = styled.section`
 
     .toggleMenu .Links__item {
       display: block;
-      padding: 30px;
+      padding: 35px;
+      border: 1px solid var(--color-dark);
     }
 
     .container__item {

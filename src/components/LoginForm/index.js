@@ -5,7 +5,7 @@ export const Form = styled.form`
   width: 100%;
   margin: 0 20px;
   .User {
-    color: var(--color-white);
+    color: var(--color-dark);
     font-size: 100px;
     max-width: fit-content;
     margin: auto;

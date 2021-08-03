@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
@@ -7,6 +8,8 @@ import { Header } from "./Header/index.jsx";
 import "./index.css";
 
 export default function App() {
+  const currentUser = useSelector((state) => state.login.currentUser);
+
   return (
     <div id="live">
       <Router>
@@ -15,6 +18,13 @@ export default function App() {
           <Switch>
             <Route exact path="/" component={() => <Home />} />
             <Route exact path="/login" component={() => <Login />} />
+            {
+              currentUser ? (
+                <Route exact path="/edit_app" component={() => <Home />} />
+              ) : (
+                <Redirect exact to="/login" />
+              )
+            }
           </Switch>
         </div>
         <Footer />
