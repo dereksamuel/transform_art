@@ -148,7 +148,7 @@ export const NavBar = styled.section`
 
   @media screen and (max-width: 521px) {
     .inputMdBefore {
-      animation: fade 1s forwards;
+      animation: fadeNav 1s forwards;
     }
     .input_after {
       padding-top: 16px;
@@ -159,7 +159,7 @@ export const NavBar = styled.section`
     }
   }
 
-  @keyframes fade {
+  @keyframes fadeNav {
     0% {
       opacity: 1;
       display: block;

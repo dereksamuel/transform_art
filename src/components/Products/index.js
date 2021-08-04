@@ -3,10 +3,11 @@ import styled from "@emotion/styled";
 export const ProductsComponent = styled.ul`
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
   align-content: center;
   text-align: center;
   justify-content: center;
+  justify-items: center;
   gap: 15px;
   li.ProductItem {
     border-radius: 10px;

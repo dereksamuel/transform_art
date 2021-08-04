@@ -59,9 +59,9 @@ export const ModalComponent = styled.div`
     background: var(--color-dark);
     z-index: 102;
     font-size: 40px;
-    left: -5px;
+    left: 5px;
     cursor: pointer;
-    top: -5px;
+    top: 5px;
     width: fit-content;
     transition: 0.2s transform;
     height: fit-content;

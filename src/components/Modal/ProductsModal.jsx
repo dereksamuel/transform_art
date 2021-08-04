@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MdAttachMoney, MdLocalOffer, MdSpaceBar, MdVerticalAlignBottom, MdImage, MdVideocam, MdModeEdit } from "react-icons/md";
 import { Button } from "../Button/index.jsx";
 import { DeleteButton } from "../DeleteButton/index.jsx";
@@ -8,7 +8,14 @@ import { Title } from "../Title/index.jsx";
 export const ProductsModal = ({
   modalInfo,
   handleDeleteProduct,
+  // handleShowModal,
+  // setAlertMessage,
+  handleAction,
+  disabled,
+  onChange,
+  handleOnChangeVideo,
 }) => {
+  let timer = null;
   const [statusTab, setStatusTab] = useState("information");
   const [previsualization, setPrevisualization] = useState(false);
 
@@ -19,25 +26,11 @@ export const ProductsModal = ({
     setPrevisualization(!previsualization);
   };
 
-  const handleAction = async (event) => {
-    event.preventDefault();
-
-    // const action = modalInfo ? useEditProduct : useCreateProduct;
-    const form = new FormData(ref.current);
-    const objectParam = {
-      name: form.get("name"),
-      description: form.get("description"),
-      price: form.get("price"),
-      offer: form.get("offer"),
-      width: form.get("width"),
-      height: form.get("height"),
-      src: form.get("src"),
-      src_video: form.get("src_video"),
+  useEffect(() => {
+    return () => {
+      if (timer) clearTimeout(timer);
     };
-
-    console.log(objectParam);
-    // await action(objectParam);
-  };
+  }, []);
 
   return (
     <>
@@ -48,7 +41,7 @@ export const ProductsModal = ({
               <Title color="var(--color-dark)">Previsualizar</Title>
             </div>
             {
-              modalInfo ? (
+              modalInfo?.src ? (
                 <figure className="image">
                   <img src={modalInfo.src} alt={modalInfo.name} className="full__image" />
                   <h3 className="Title">{modalInfo.name}</h3>
@@ -58,7 +51,7 @@ export const ProductsModal = ({
                 </figure>
               )
             }
-            <form ref={ref} className="content" onSubmit={handleAction}>
+            <form ref={ref} className="content" onSubmit={(event) => handleAction(event, ref, timer)}>
               <div className="d-flex-dk">
                 <p
                   style={ statusTab === "information" ? { color: "var(--color-light)", } : {}}
@@ -76,6 +69,7 @@ export const ProductsModal = ({
                         type: "text",
                         required: true,
                         id: "name",
+                        defaultValue: modalInfo?.name,
                         placeholder: "Nombre",
                         name: "name",
                       }}
@@ -88,6 +82,7 @@ export const ProductsModal = ({
                     txtProps={{
                       placeholder: "Descripción",
                       name: "description",
+                      defaultValue: modalInfo?.description || "",
                     }}
                   />
                   <div className="d-flex">
@@ -100,6 +95,7 @@ export const ProductsModal = ({
                           placeholder: "Precio",
                           name: "price",
                           required: true,
+                          defaultValue: modalInfo?.price || "",
                         }}
                         prependColors="white"
                       >
@@ -114,6 +110,7 @@ export const ProductsModal = ({
                           id: "oferta",
                           placeholder: "Oferta",
                           name: "offer",
+                          defaultValue: modalInfo?.offer || "",
                         }}
                         prependColors="white"
                       >
@@ -131,6 +128,7 @@ export const ProductsModal = ({
                           placeholder: "Ancho del cuadro",
                           name: "width",
                           required: true,
+                          defaultValue: modalInfo?.width || "",
                         }}
                         prependColors="white"
                       >
@@ -146,6 +144,7 @@ export const ProductsModal = ({
                           placeholder: "Alto del cuadro",
                           name: "height",
                           required: true,
+                          defaultValue: modalInfo?.height || "",
                         }}
                         prependColors="white"
                       >
@@ -175,6 +174,7 @@ export const ProductsModal = ({
                           filename: modalInfo?.name || "",
                           placeholder: "Dirección de la imágen",
                           name: "src",
+                          onChange,
                         }}
                         prependColors="white"
                       >
@@ -189,6 +189,7 @@ export const ProductsModal = ({
                           placeholder: "Dirección del video",
                           name: "src_video",
                           accept: "video/mp4,video/x-m4v,video/*",
+                          onChange: handleOnChangeVideo,
                         }}
                         prependColors="white"
                       >
@@ -198,8 +199,10 @@ export const ProductsModal = ({
                   </div>
                 </div>
               <div className="d-flex buttons">
-                <DeleteButton functionClick={handleDeleteProduct} />
-                <Button theme="primary" padding="10px" type="submit">Guardar</Button>
+                {
+                  modalInfo && <DeleteButton modalInfo={modalInfo} disabled={disabled} timer={timer} functionClick={handleDeleteProduct} />
+                }
+                <Button theme="primary" padding="10px" type="submit" disabled={disabled}>Guardar</Button>
               </div>
             </form>
           </div>
