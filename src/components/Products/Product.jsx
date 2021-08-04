@@ -1,6 +1,6 @@
-export const Product = ({ product }) => {
+export const Product = ({ product, onClick }) => {
   return (
-    <li className="ProductItem iterable">
+    <li className="ProductItem iterable" onClick={() => onClick(true, product)}>
       <img
         src={product.src}
         alt={product.name}

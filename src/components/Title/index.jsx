@@ -1,8 +1,8 @@
 import { SubText, Text } from ".";
 
-export const Title = ({ children }) => {
+export const Title = ({ children, color }) => {
   return (
-    <Text>{ children }</Text>
+    <Text color={color}>{ children }</Text>
   );
 };
 

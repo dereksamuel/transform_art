@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 
 export const Text = styled.h3`
-  background: var(--color-light_gray);
+  background: ${({ color }) => color ? color : "var(--color-light_gray)"};
+  color: ${({ color }) => color ? "var(--color-light)" : "var(--color-dark)"};
+  cursor: ${({ color }) => color && "pointer"};
   font-style: italic;
-  padding: 15px 30px;
-  font-size: 16px;
+  padding: ${({ color }) => color ? "5px 15px" : "15px 30px"};
+  font-size: ${({ color }) => color ? "12px" : "16px"};
   width: fit-content;
   border-radius: 90px 0px 90px 0px;
 `;

@@ -13,6 +13,7 @@ export const ProductsComponent = styled.ul`
     max-width: 200px;
     width: 100%;
     min-height: 200px;
+    max-height: 200px;
     height: 100%;
     border: var(--color-light_gray) 1px solid;
     color: gray;

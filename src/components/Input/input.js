@@ -1,5 +1,19 @@
 import styled from "@emotion/styled";
 
+export const Prepend = styled.span`
+  background-color: ${({ prependColors }) => {
+    return prependColors === "white" ? "var(--color-secondary)" : "var(--color-dark)";
+  }};
+  display: flex;
+  align-items: center;
+  border-radius: 12px 0px 0px 12px;
+  padding: 0 20px;
+  color: ${({ prependColors }) => {
+    return prependColors === "white" ? "var(--color-dark)" : "var(--color-light)";
+  }};
+  font-size: 20px;
+`;
+
 export const Label = styled.label`
   background-color: var(--color-light-gray-2);
   border-radius: 12px;
@@ -7,7 +21,7 @@ export const Label = styled.label`
   /* max-width: fit-content; */
   box-shadow: inset 0px 3px 16px #00000042;
 
-  & input {
+  & input, & textarea {
     background: none;
     border: none;
     font-family: var(--font-1);
@@ -17,6 +31,18 @@ export const Label = styled.label`
     color: var(--color-dark);
     padding: 1rem;
     transition: 0.2s all;
+  }
+
+  & textarea {
+    min-height: 100px;
+    max-height: 150px;
+    min-width: 100%;
+  }
+
+  input::-webkit-file-upload-button {
+    background: none;
+    border: none;
+    font-family: var(--font-2);
   }
 
   /* & input:focus ~ label {
@@ -37,16 +63,6 @@ export const Label = styled.label`
     width: 10px;
     /* Will place small red box on the right of input (positioning carries over) */
 
-  }
-
-  .preppend {
-    background-color: var(--color-dark);
-    display: flex;
-    align-items: center;
-    border-radius: 12px 0px 0px 12px;
-    padding: 0 20px;
-    color: var(--color-light);
-    font-size: 20px;
   }
 `;
 

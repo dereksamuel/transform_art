@@ -4,20 +4,15 @@ import styled from "@emotion/styled";
 const buttonThemes = {
   "primary": css`
     background: transparent linear-gradient(180deg, #94e0db 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
+    color: var(--color-dark);
   `,
   "secondary": css`
     background: transparent linear-gradient(180deg, #f37070 0%, var(--color-radioactive) 100%) 0% 0% no-repeat padding-box;
     color: var(--color-light);
-    font-size: 14px;
-    /* box-shadow: 0px 0px 40px #2a3b3873; */
-    transition: 0.1s all;
-    /* border: 1px solid var(--color-primary); */
-    &:hover {
-      transform: scale(1.01);
-    }
-    &:focus {
-      transform: scale(0.98);
-    }
+  `,
+  "danger": css`
+    background: transparent linear-gradient(180deg, var(--color-bad) 0%,  #b12630 100%) 0% 0% no-repeat padding-box;
+    color: var(--color-light);
   `,
   "dark": css`
     background: transparent linear-gradient(180deg, #3B403F 0%, #111100 100%) 0% 0% no-repeat padding-box;
@@ -35,10 +30,18 @@ export const ButtonComponents = styled.button`
   border: none;
   outline: none;
   border-radius: 5px;
-  padding: 15px;
+  padding: ${({ padding }) => padding || "15px" };
   background: transparent linear-gradient(180deg, #94e0db 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
+  font-size: 14px;
+  transition: 0.1s all;
   &:disabled {
     opacity: 0.58;
+  }
+  &:hover {
+    transform: scale(1.01);
+  }
+  &:focus {
+    transform: scale(0.98);
   }
   ${(props) => {
     return buttonThemes[props.theme] || buttonThemes[0];

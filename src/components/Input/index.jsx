@@ -1,6 +1,26 @@
-import { CheckBox, Label } from "./input.js";
+import { CheckBox, Label, Prepend } from "./input.js";
 
-export const Input = ({ inputProps, setValue, children, value }) => {
+export const Textarea = ({ txtProps, setValue, children, value, prependColors }) => {
+  const handleChangeInput = (event) => {
+    setValue?.(event.target.value);
+  };
+
+  return (
+    <>
+      <Label htmlFor={txtProps?.id || ""}>
+        {
+          children && <Prepend prependColors={prependColors}>{children}</Prepend>
+        }
+        <textarea
+          onChange={handleChangeInput}
+          {...txtProps}
+          value={value} />
+      </Label>
+    </>
+  );
+};
+
+export const Input = ({ inputProps, setValue, children, value, prependColors }) => {
   const handleChangeInput = (event) => {
     setValue?.(event.target.value);
   };
@@ -14,7 +34,7 @@ export const Input = ({ inputProps, setValue, children, value }) => {
     <>
       {
         inputProps.type === "checkbox" ? <CheckBox>
-          <span>{children}</span>
+          <span className="preppend">{children}</span>
           <input
             className="CheckBox"
             onChange={handleChangeCheck}
@@ -22,7 +42,9 @@ export const Input = ({ inputProps, setValue, children, value }) => {
             value={value} />
           <span className="checkmark"></span>
         </CheckBox> : <Label htmlFor={inputProps?.id || ""}>
-          <span className={children && "preppend"}>{children}</span>
+          {
+            children && <Prepend prependColors={prependColors}>{children}</Prepend>
+          }
           <input
             onChange={handleChangeInput}
             {...inputProps}
