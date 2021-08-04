@@ -1,33 +1,51 @@
+/* eslint-disable no-undef */
 import { BrowserRouter as Router, Redirect, Route, Switch } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { Home } from "../pages/Home";
 import { Login } from "../pages/Login";
 import { Footer } from "./Footer/index.jsx";
 import { Header } from "./Header/index.jsx";
 import "./index.css";
+import { useUser } from "../hooks/useUser";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { EditApp } from "../pages/EditApp";
+import firebase from "../helpers/firebase.js";//FIXME: HIA
 
 export default function App() {
-  const currentUser = useSelector((state) => state.login.currentUser);
+  const { loading, currentUser } = useUser();
+  const rememberMe = useSelector((state) => state.login.rememberMe);
+
+  useEffect(() => {
+    verifyRememberMe();
+  }, []);
+
+  async function verifyRememberMe() {
+    if (!JSON.parse(rememberMe)) {
+      await firebase.auth().signOut();//FIXME: Arregla the error of clean useEffect
+    }
+  }
+
+  if (loading)
+    return <p>Loading</p>
 
   return (
     <div id="live">
       <Router>
         <Header />
-        <div id="live_container">
-          <Switch>
-            <Route exact path="/" component={() => <Home />} />
-            <Route exact path="/login" component={() => <Login />} />
-            {
-              currentUser ? (
-                <Route exact path="/edit_app" component={() => <Home />} />
-              ) : (
-                <Redirect exact to="/login" />
-              )
-            }
-          </Switch>
-        </div>
-        <Footer />
+        <Switch>
+          <Route exact path="/" component={() => <Home />} />
+          <Route exact path="/login" component={() => <Login currentUser={currentUser} />} />
+          {/* <Route exact path="/create_my_picture" component={() => <Home />} /> */}
+          {
+            currentUser ? (
+              <Route exact path="/edit_app" component={() => <EditApp />} />
+            ) : (
+              <Redirect exact to="/login" />
+            )
+          }
+        </Switch>
+        <Footer currentUser={currentUser} />
       </Router>
     </div>
   );

@@ -46,7 +46,7 @@ export const Label = styled.label`
     border-radius: 12px 0px 0px 12px;
     padding: 0 20px;
     color: var(--color-light);
-    font-size: 25px;
+    font-size: 20px;
   }
 `;
 
@@ -60,7 +60,7 @@ export const CheckBox = styled.label`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-size: 16px;
+  font-size: 14px;
   color: var(--color-dark);
 
   /* Hide the browser's default checkbox */

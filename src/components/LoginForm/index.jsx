@@ -6,8 +6,13 @@ import { Form } from "./index";
 import { Button} from "../Button/index.jsx";
 import { useState } from "react";
 import { Alert } from "../Alert/index.jsx";
+import { useDispatch } from "react-redux";
+import { changeRememberMe } from "../../features/login/loginSlice";
+import firebase from "../../helpers/firebase.js";
 
 export const LoginForm = () => {
+  const dispath = useDispatch();
+
   let timerError = null;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -32,6 +37,11 @@ export const LoginForm = () => {
         .auth()
         .signInWithEmailAndPassword(email, password);
       setLoading(false);
+      if (rememberMe)
+        sessionStorage.setItem("rememberMe", rememberMe);
+      else
+        sessionStorage.removeItem("rememberMe");
+      dispath(changeRememberMe(rememberMe));
     } catch (error) {
       setLoading(false);
       setError(error);

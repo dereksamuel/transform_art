@@ -62,8 +62,13 @@ a {
   font-weight: bold;
 }
 
-#live_container {
-  height: calc(100vh - 139.95px);
+
+#live {
+  height: 100%;
+}
+
+#root {
+  height: 100vh;
 }
 
 .Login {
@@ -72,4 +77,16 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: calc(100vh - 139.95px);
+}
+
+.EditApp {
+  display: block;
+  max-width: 1200px;
+  margin: auto;
+  padding: 15px;
+}
+
+h1, h2, h3 {
+  color: var(--color-dark);
 }

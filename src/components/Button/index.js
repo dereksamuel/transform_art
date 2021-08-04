@@ -9,7 +9,7 @@ const buttonThemes = {
     background: transparent linear-gradient(180deg, #f37070 0%, var(--color-radioactive) 100%) 0% 0% no-repeat padding-box;
     color: var(--color-light);
     font-size: 14px;
-    box-shadow: 0px 0px 40px var(--color-dark);
+    /* box-shadow: 0px 0px 40px #2a3b3873; */
     transition: 0.1s all;
     /* border: 1px solid var(--color-primary); */
     &:hover {

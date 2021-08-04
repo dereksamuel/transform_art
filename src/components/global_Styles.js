@@ -41,8 +41,13 @@ export const NavBar = styled.section`
 
   .Links__item a {
     color: var(--color-secondary);
-    font-size: 13px;
+    font-size: 14px;
     text-decoration: none;
+    transition: color 0.5s;
+  }
+
+  .Links__item a:hover {
+    color: var(--color-light);
   }
 
   .Links__item--icon {
