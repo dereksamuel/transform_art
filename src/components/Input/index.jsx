@@ -1,13 +1,13 @@
 import { CheckBox, Label, Prepend } from "./input.js";
 
-export const Textarea = ({ txtProps, setValue, children, value, prependColors }) => {
+export const Textarea = ({ txtProps, setValue, children, value, prependColors, beforeInput }) => {
   const handleChangeInput = (event) => {
     setValue?.(event.target.value);
   };
 
   return (
     <>
-      <Label htmlFor={txtProps?.id || ""}>
+      <Label htmlFor={txtProps?.id || ""} beforeInput={beforeInput}>
         {
           children && <Prepend prependColors={prependColors}>{children}</Prepend>
         }

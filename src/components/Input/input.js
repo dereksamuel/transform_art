@@ -42,7 +42,31 @@ export const Label = styled.label`
   input::-webkit-file-upload-button {
     background: none;
     border: none;
+    visibility: hidden;
+    -webkit-appearance: none;
+   float: right;
+  }
+
+  & input[type="text"]:read-only {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  
+  input[type="file"]::before {
     font-family: var(--font-2);
+    display: inline-block;
+    background: linear-gradient(top, #f9f9f9, #e3e3e3);
+    border: 1px solid #999;
+    border-radius: 3px;
+    padding: 5px 8px;
+    outline: none;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px #fff;
+    font-weight: 700;
+    font-size: 10pt;
+    /* content: ${(props) => props?.beforeInput || "Seleccioanar archivos"}; */
   }
 
   /* & input:focus ~ label {

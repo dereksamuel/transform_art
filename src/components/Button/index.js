@@ -6,6 +6,11 @@ const buttonThemes = {
     background: transparent linear-gradient(180deg, #94e0db 0%, #50a1b1 100%) 0% 0% no-repeat padding-box;
     color: var(--color-dark);
   `,
+  "primary-outline": css`
+    background: none;
+    border: #50a1b1 1px solid;
+    color: var(--color-primary);
+  `,
   "secondary": css`
     background: transparent linear-gradient(180deg, #f37070 0%, var(--color-radioactive) 100%) 0% 0% no-repeat padding-box;
     color: var(--color-light);
@@ -19,6 +24,11 @@ const buttonThemes = {
   `,
   "light": css`
     background: transparent linear-gradient(180deg, #DDDDDD 0%, #DFDFDD 100%) 0% 0% no-repeat padding-box;
+  `,
+  "light-outline": css`
+    background: none;
+    border: var(--color-light_gray) 1px solid;
+    color: var(--color-light_gray);
   `,
 };
 

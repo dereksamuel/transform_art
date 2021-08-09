@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { ProductsComponent } from ".";
 import { MdAdd } from "react-icons/md";
@@ -8,7 +8,7 @@ import { ProductsModal } from "../Modal/ProductsModal.jsx";
 import { Alert } from "../Alert/index.jsx";
 
 import { useCreateDB } from "../../hooks/useCreateDB.js";
-import { useEditProduct } from "../../hooks/useEditProduct.js";
+import { useEditDB } from "../../hooks/useEditDB.js";
 import { storage, db } from "../../helpers/firebase";
 
 export const Products = ({ products }) => {
@@ -18,7 +18,18 @@ export const Products = ({ products }) => {
   const [fileURL, setFileURL] = useState(null);
   const [fileVideoURL, setVideoURL] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [fileURLBlob, setFileURLBlob] = useState(null);
+  const [videoURLBlob, setVideoURLBlob] = useState(null);
   const [fileVideoName, setVideoName] = useState(null);
+  const [file, setFile] = useState(null);
+
+  const [fileVideo, setFileVideo] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const [inputChange, setInputChange] = useState(false);
+  const [inputChangeVideo, setInputChangeVideo] = useState(false);
+
+  const ref = useRef();
 
   const handleShowModal = (value = true, product) => {
     if (product) {
@@ -26,63 +37,136 @@ export const Products = ({ products }) => {
     } else {
       setModalInfo(null);
     }
+    if (value === false) {
+      cleanData();
+    }
     setShowModal(value);
   };
 
+  const cleanData = () => {
+    setFileURL(null);
+    setVideoURL(null);
+    setFileName(null);
+    setFileURLBlob(null);
+    setFile(null);
+    setVideoName(null);
+    setFileVideo(null);
+    setInputChange(false);
+    setInputChangeVideo(false);
+    setLoading(false);
+  };
+
   const handleDeleteProduct = async (element, timer) => {
+    const storageRef = storage.ref();
+    const fileRef = element.file_name ? storageRef.child(element.file_name) : null;
+    const videoRef = element.file_video_name ? storageRef.child(element.file_video_name) : null;
     try {
-      const storageRef = storage.ref();
-      const fileRef = storageRef.child(element.file_name);
-      const videoRef = storageRef.child(element.file_video_name);
+      await Promise.all([
+        fileRef?.delete(),
+        videoRef?.delete(),
+        db.collection("products").doc(element.id).delete(),
+      ]);
 
-      console.log(videoRef, fileRef);
-      if (videoRef && fileRef) {
-        await Promise.all([
-          fileRef.delete(),
-          videoRef.delete(),
-          db.collection("products").doc(element.id).delete(),
-        ]);
-      }
-
-      setShowModal(false);
+      handleShowModal(false);
       setAlertMessage({
         text: "Producto eliminado con éxito",
         theme: "good",
         title: "Acción exitosa:",
       });
-      timer = setTimeout(() => {
-        clearTimeout(timer);
-        setAlertMessage(null);
-      }, 3500);
     } catch (error) {
-      console.error(error);
-      setShowModal(false);
+      handleShowModal(false);
       setAlertMessage({
         text: "Producto eliminado sin éxito",
         theme: "bad",
         title: "Error:",
       });
-      timer = setTimeout(() => {
-        setAlertMessage(null);
-      }, 3500);
     }
   };
 
-  const handleAction = async (event, ref, timer) => {
+  const handleAction = async (event, ref) => {
     event.preventDefault();
-    if (!fileURL || !fileVideoURL) {
-      timer = setTimeout(() => {
-        setAlertMessage({
-          text: "Subir una imágen y un video es requerido",
-          theme: "bad",
-          title: "Error:",
-        });
-      }, 3500);
+    setLoading(true);
+    let setterVideoUrl;
+    let setterFileUrl;
+    if (!file && !modalInfo) {
+      setAlertMessage({
+        text: "Subir una imágen y un video es requerido",
+        theme: "bad",
+        title: "Error:",
+      });
       return;
     }
 
-    const action = modalInfo ? useEditProduct : useCreateDB;
+    if (file) {
+      try {
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(file.name);
+
+        if (modalInfo) {
+          const refModalInfo = storageRef.child(modalInfo.file_name);
+          await refModalInfo.delete().catch((error) => {
+            console.error("[Error delete storage ref]: ", error);
+            setAlertMessage({
+              text: "Ha ocurrido un error al actualizar su producto ESPERE",
+              theme: "bad",
+              title: "Error:",
+            });
+          });
+        }
+        await fileRef.put(file);
+        setterFileUrl = await fileRef.getDownloadURL();
+        setFileURL(setterFileUrl);
+        setFileName(file.name);
+      } catch (error) {
+        console.error(error);
+        handleShowModal(false);
+        setAlertMessage({
+          text: "No se ha actualizado con éxito su producto posiblemente porque el archivo pesa mucho",
+          theme: "bad",
+          title: "Error:",
+        });
+      }
+    }
+
+    if (fileVideo) {
+      try {
+        const storageRef = storage.ref();
+        const fileRef = storageRef.child(fileVideo.name);
+
+        if (modalInfo && modalInfo.file_video_name) {
+          const refModalInfo = storageRef.child(modalInfo.file_video_name);
+          await refModalInfo.delete().catch((error) => {
+            console.error("[Error delete storage ref]: ", error);
+            setAlertMessage({
+              text: "Ha ocurrido un error al actualizar su producto ESPERE",
+              theme: "bad",
+              title: "Error:",
+            });
+          });
+        }
+        await fileRef.put(fileVideo);
+        setterVideoUrl = await fileRef.getDownloadURL();
+        setVideoURL(setterVideoUrl);
+        setVideoName(fileVideo.name);
+      } catch (error) {
+        console.error(error);
+        handleShowModal(false);
+        setAlertMessage({
+          text: "No se ha actualizado con éxito su producto posiblemente porque el video pesa mucho",
+          theme: "bad",
+          title: "Error:",
+        });
+      }
+    }
+
+    const action = modalInfo ? useEditDB : useCreateDB;
     const form = new FormData(ref.current);
+    const objectUrl = {
+      src: setterFileUrl,
+      src_video: setterVideoUrl || "",
+      file_name: file?.name,
+      file_video_name: fileVideo?.name || "",
+    };
     const objectParam = {
       name: form.get("name"),
       description: form.get("description"),
@@ -90,28 +174,36 @@ export const Products = ({ products }) => {
       offer: form.get("offer"),
       width: form.get("width"),
       height: form.get("height"),
-      src: fileURL,
-      src_video: fileVideoURL,
-      file_name: fileName,
-      file_video_name: fileVideoName,
     };
 
     try {
-      await action({ collection: "products", data: objectParam });
+      await action({ collection: "products", docId: modalInfo?.id, data: 
+        modalInfo ? {
+          ...modalInfo,
+          ...objectParam,
+          src: inputChange ? objectUrl.src : modalInfo.src,
+          src_video: inputChangeVideo ? objectUrl.src_video : modalInfo.src_video,
+          file_name: inputChange ? file?.name || modalInfo.file_name : modalInfo.file_name,
+          file_video_name: inputChangeVideo ? fileVideo?.name || "" : modalInfo.file_video_name,
+        } : { ...objectParam, ...objectUrl }
+      });
+      setLoading(false);
       setAlertMessage({
-        text: "Se ha creado con éxito su producto",
+        text: `Se ha ${
+          modalInfo ? "actualizado" : "creado"
+        } con éxito su producto`,
         theme: "good",
         title: "Acción exitosa:",
       });
-      timer = setTimeout(() => {
-        setAlertMessage(null);
-        clearTimeout(timer);
-      }, 5000);
       handleShowModal(false);
     } catch (error) {
-      console.error(error);
+      console.error("[load file ERROR]:", error);
+      setLoading(false);
+      // handleShowModal(false);
       setAlertMessage({
-        text: "No se ha creado con éxito su producto",
+        text: `No se ha ${
+          modalInfo ? "actualizado" : "creado"
+        } con éxito su producto`,
         theme: "bad",
         title: "Error:",
       });
@@ -119,31 +211,24 @@ export const Products = ({ products }) => {
   };
 
   const handleOnChangeFile = async (event) => {
-    // const $buttonTextFile = document.querySelector("input[name="]");
-    const file = event.target.files[0];
-    const storageRef = storage.ref();
-    const fileRef = storageRef.child(file.name);
-
-    await fileRef.put(file);
-    setFileURL(await fileRef.getDownloadURL());
-    setFileName(file.name);
+    // const $buttonTextFile = document.querySelector("input::-webkit-file-upload-button");
+    setFile(event.target.files[0]);
+    setFileURLBlob(URL?.createObjectURL(new File([ event.target.files[0] ], event.target.files[0].name, {
+      type: "text/plain",
+    })));
   };
 
   const handleOnChangeVideo = async (event) => {
-    // const $buttonTextFile = document.querySelector("input[name="]");
-    const file = event.target.files[0];
-    const storageRef = storage.ref();
-    const fileRef = storageRef.child(file.name);
-
-    await fileRef.put(file);
-    setVideoURL(await fileRef.getDownloadURL());
-    setVideoName(file.name);
+    setFileVideo(event.target.files[0]);
+    setVideoURLBlob(URL?.createObjectURL(new File([ event.target.files[0] ], event.target.files[0].name, {
+      type: "text/plain",
+    })));
   };
 
   return (
     <ProductsComponent>
       {
-        alertMessage && <Alert text={alertMessage.text} theme={alertMessage.theme} title={alertMessage.title} />
+        alertMessage && <Alert text={alertMessage.text} deleteAlert={() => setAlertMessage(false)} theme={alertMessage.theme} title={alertMessage.title} />
       }
       {
         showModal && <Modal onClick={handleShowModal} closeButton>
@@ -153,7 +238,14 @@ export const Products = ({ products }) => {
             setAlertMessage={setAlertMessage}
             handleShowModal={handleShowModal}
             onChange={handleOnChangeFile}
-            disabled={!modalInfo && (!fileURL || !fileVideoURL)}
+            formRef={ref}
+            disabled={!modalInfo ? !file : loading}
+            loading={loading}
+            fileURLBlob={fileURLBlob}
+            inputChange={inputChange}
+            inputChangeVideo={inputChangeVideo}
+            setInputChange={setInputChange}
+            setInputChangeVideo={setInputChangeVideo}
             handleOnChangeVideo={handleOnChangeVideo}
             handleDeleteProduct={handleDeleteProduct}></ProductsModal>
         </Modal>

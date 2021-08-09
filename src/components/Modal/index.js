@@ -117,6 +117,9 @@ export const ModalComponent = styled.div`
     max-width: 210px;
     margin: 0 5px;
     margin-top: 10px;
+    button {
+      margin-top: 10px;
+    }
   }
   .input {
     margin: 10px 2px;

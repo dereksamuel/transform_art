@@ -10,20 +10,32 @@ export const ProductsModal = ({
   handleDeleteProduct,
   // handleShowModal,
   // setAlertMessage,
+  fileURLBlob,
   handleAction,
   disabled,
+  loading,
   onChange,
   handleOnChangeVideo,
+  inputChange,
+  setInputChange,
+  inputChangeVideo,
+  setInputChangeVideo,
+  formRef: ref,
 }) => {
   let timer = null;
   const [statusTab, setStatusTab] = useState("information");
   const [previsualization, setPrevisualization] = useState(false);
-
-  // INPUTS MODAL
-  const ref = useRef();
+  const refFile = useRef(null);
 
   const handlePrevisualization = () => {
     setPrevisualization(!previsualization);
+  };
+
+  const generateFile = (src, name) => {
+    const fileGeneration = new File([src], name, {
+      type: "text/plain",
+    });
+    return fileGeneration;
   };
 
   useEffect(() => {
@@ -37,18 +49,24 @@ export const ProductsModal = ({
       {
         !previsualization ? (
           <div>
-            <div className="title" onClick={handlePrevisualization}>
-              <Title color="var(--color-dark)">Previsualizar</Title>
-            </div>
             {
-              modalInfo?.src ? (
+              modalInfo && <div className="title" onClick={handlePrevisualization}>
+                <Title color="var(--color-dark)">Previsualizar</Title>
+              </div>
+            }
+            {
+              fileURLBlob ?
+                <img src={fileURLBlob} alt="previewUrl" className="full__image" />
+              : modalInfo?.src ? (
                 <figure className="image">
                   <img src={modalInfo.src} alt={modalInfo.name} className="full__image" />
                   <h3 className="Title">{modalInfo.name}</h3>
                 </figure>
               ) : (
-                <figure className="full__image__empty">
-                </figure>
+                <div>
+                  <figure className="full__image__empty">
+                  </figure>
+                </div>
               )
             }
             <form ref={ref} className="content" onSubmit={(event) => handleAction(event, ref, timer)}>
@@ -166,43 +184,131 @@ export const ProductsModal = ({
                 </div>
                 <div style={statusTab !== "video" ? { display: "none", } : { display: "block", }}>
                   <div className="d-flex">
-                    <div className="container__input">
-                      <Input
-                        inputProps={{
-                          type: "file",
-                          id: "SrcImage",
-                          filename: modalInfo?.name || "",
-                          placeholder: "Dirección de la imágen",
-                          name: "src",
-                          onChange,
-                        }}
-                        prependColors="white"
-                      >
-                        <MdImage />
-                      </Input>
-                    </div>
-                    <div className="container__input">
-                      <Input
-                        inputProps={{
-                          type: "file",
-                          id: "Video",
-                          placeholder: "Dirección del video",
-                          name: "src_video",
-                          accept: "video/mp4,video/x-m4v,video/*",
-                          onChange: handleOnChangeVideo,
-                        }}
-                        prependColors="white"
-                      >
-                        <MdVideocam />
-                      </Input>
-                    </div>
+                    {
+                      !modalInfo ? (
+                        <>
+                          <div className="container__input">
+                            <Input
+                              inputProps={{
+                                type: "file",
+                                id: "SrcImage",
+                                filename: modalInfo?.src || "",
+                                placeholder: "Dirección de la imágen",
+                                name: "src",
+                                onChange,
+                                accept: "image/*",
+                                ref: refFile,
+                                // setRefFile: generateFile(modalInfo?.src, modalInfo?.file_name),
+                              }}
+                              prependColors="white"
+                            >
+                              <MdImage />
+                            </Input>
+                          </div>
+                          <div className="container__input">
+                            <Input
+                              inputProps={{
+                                type: "file",
+                                id: "Video",
+                                placeholder: "Dirección del video",
+                                name: "src_video",
+                                accept: "video/mp4,video/x-m4v,video/*",
+                                onChange: handleOnChangeVideo,
+                                // defaultValue: generateFile(modalInfo?.src_video, modalInfo?.file_video_name),
+                              }}
+                              prependColors="white"
+                            >
+                              <MdVideocam />
+                            </Input>
+                          </div>
+                        </>
+                      ) : <>
+                          {
+                            !inputChange ? 
+                            <div className="container__input">
+                              <Input
+                                inputProps={{
+                                  type: "text",
+                                  id: "SrcImage",
+                                  placeholder: "Dirección de la imágen",
+                                  name: "src",
+                                  defaultValue: modalInfo.file_name,
+                                  readOnly: true,
+                                  // setRefFile: generateFile(modalInfo?.src, modalInfo?.file_name),
+                                }}
+                                prependColors="white"
+                              >
+                                <MdImage />
+                              </Input>
+                              <Button padding="5px" theme="primary-outline" onClick={() => setInputChange(true)} type="button">Cambiar</Button>
+                            </div> : <div className="container__input">
+                              <Input
+                                inputProps={{
+                                  type: "file",
+                                  id: "SrcImage",
+                                  filename: modalInfo?.src || "",
+                                  placeholder: "Dirección de la imágen",
+                                  name: "src",
+                                  onChange,
+                                  accept: "image/*",
+                                  ref: refFile,
+                                  // setRefFile: generateFile(modalInfo?.src, modalInfo?.file_name),
+                                }}
+                                prependColors="white"
+                              >
+                                <MdImage />
+                              </Input>
+                              <Button padding="5px" theme="light-outline" onClick={() => setInputChange(false)} type="button">Cancelar</Button>
+                            </div>
+                          }
+                          {
+                            !inputChangeVideo ? <div className="container__input">
+                              <Input
+                                inputProps={{
+                                  type: "text",
+                                  id: "Video",
+                                  placeholder: "Dirección del video",
+                                  name: "src_video",
+                                  readOnly: true,
+                                  defaultValue: modalInfo.file_video_name,
+                                  // defaultValue: generateFile(modalInfo?.src_video, modalInfo?.file_video_name),
+                                }}
+                                prependColors="white"
+                              >
+                                <MdVideocam />
+                              </Input>
+                              <Button padding="5px" theme="primary-outline" onClick={() => setInputChangeVideo(true)} type="button">Cambiar</Button>
+                            </div> :  <div className="container__input">
+                              <Input
+                                inputProps={{
+                                  type: "file",
+                                  id: "Video",
+                                  placeholder: "Dirección del video",
+                                  name: "src_video",
+                                  accept: "video/mp4,video/x-m4v,video/*",
+                                  onChange: handleOnChangeVideo,
+                                  // defaultValue: generateFile(modalInfo?.src_video, modalInfo?.file_video_name),
+                                }}
+                                prependColors="white"
+                              >
+                                <MdVideocam />
+                              </Input>
+                              <Button padding="5px" theme="light-outline" onClick={() => setInputChangeVideo(false)} type="button">Cancelar</Button>
+                            </div>
+                          }
+                        </>
+                    }
                   </div>
                 </div>
               <div className="d-flex buttons">
                 {
-                  modalInfo && <DeleteButton modalInfo={modalInfo} disabled={disabled} timer={timer} functionClick={handleDeleteProduct} />
+                  modalInfo && <DeleteButton modalInfo={modalInfo} disabled={loading || disabled} timer={timer} functionClick={handleDeleteProduct} />
                 }
-                <Button theme="primary" padding="10px" type="submit" disabled={disabled}>Guardar</Button>
+                <Button theme="primary" padding="10px" type="submit" disabled={loading || disabled}>
+                  {
+                    loading ? "Cargando" : "Guardar"
+                  }
+                </Button>
               </div>
             </form>
           </div>
