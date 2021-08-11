@@ -23,8 +23,7 @@ export const Overlay = styled.div`
 export const ModalComponent = styled.div`
   background: var(--color-dark);
   color: var(--color-light);
-  max-height: 613px;
-  overflow: auto;
+  max-height: 713px;
   border-radius: 12px;
   position: fixed;
   z-index: 101;
@@ -126,6 +125,19 @@ export const ModalComponent = styled.div`
   }
   .content {
     padding: 15px;
+  }
+  @media screen and (max-width: 758px) {
+    & {
+      width: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      height: 100%;
+      overflow: auto;
+    }
+    .container__input {
+      width: 100%;
+      max-width: 100%;
+    }
   }
   @keyframes fadeInByY {
     0% {

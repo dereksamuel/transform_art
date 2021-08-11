@@ -7,8 +7,6 @@ export const useEdit = () => {
   const dispatch = useDispatch();
   const editApp = useSelector((state) => state.editApp);
 
-  console.log(editApp);
-
   const fetchData = async () => {
     try {
       // const resultObject = {};

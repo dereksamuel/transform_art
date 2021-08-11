@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
 import { Input } from "../Input"
 import { MdPhone, MdPhoneAndroid } from "react-icons/md";
 import { InformationComponent } from ".";
+import { useEdit } from "../../hooks/useEdit.js";
+import { useEffect, useRef } from "react";
 
-export const Contact_Information = ({
-  information = [],
-}) => {
-  const [phoneHouse, setPhoneHouse] = useState("");
-  const [personalPhone, setPersonalPhone] = useState("");
+export const Contact_Information = () => {
+  const { contact_information } = useEdit();
+
+  const inputHouseRef = useRef(null);
+  const inputPrivateRef = useRef();
 
   useEffect(() => {
-    setPhoneHouse(information[0]?.phone_number_house);
-    setPersonalPhone(information[0]?.phone_number_personal);
-  }, []);
+    inputHouseRef.current.value = contact_information[0]?.phone_number_house;
+    inputPrivateRef.current.value = contact_information[0]?.phone_number_personal;
+  }, [contact_information]);
+
 
   return (
     <InformationComponent>
@@ -21,7 +23,7 @@ export const Contact_Information = ({
           inputProps={{
             type: "number",
             min: 0,
-            defaultValue: personalPhone,
+            ref: inputPrivateRef,
             placeholder: "Número del celular",
           }}
         >
@@ -32,8 +34,8 @@ export const Contact_Information = ({
         <Input
           inputProps={{
             type: "number",
+            ref: inputHouseRef,
             min: 0,
-            defaultValue: phoneHouse,
             placeholder: "Teléfono de la casa",
           }}
         >

@@ -14,7 +14,7 @@ export const EditApp = () => {
       <SubTitle>Productos:</SubTitle>
       <Products products={editApp.products}></Products>
       <SubTitle>Información de contacto:</SubTitle>
-      <ContactInformation information={editApp.contact_information}></ContactInformation>
+      <ContactInformation></ContactInformation>
       <SubTitle>Sobre nosotros(información):</SubTitle>
       <AboutUsInformation />
     </div>
