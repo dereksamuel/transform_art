@@ -85,7 +85,6 @@ export const ProductsModal = ({
                     <Input
                       inputProps={{
                         type: "text",
-                        required: true,
                         id: "name",
                         defaultValue: modalInfo?.name,
                         placeholder: "Nombre",
@@ -112,7 +111,6 @@ export const ProductsModal = ({
                           min: "0",
                           placeholder: "Precio",
                           name: "price",
-                          required: true,
                           defaultValue: modalInfo?.price || "",
                         }}
                         prependColors="white"
@@ -145,7 +143,6 @@ export const ProductsModal = ({
                           id: "Ancho",
                           placeholder: "Ancho del cuadro",
                           name: "width",
-                          required: true,
                           defaultValue: modalInfo?.width || "",
                         }}
                         prependColors="white"
@@ -161,7 +158,6 @@ export const ProductsModal = ({
                           id: "Alto",
                           placeholder: "Alto del cuadro",
                           name: "height",
-                          required: true,
                           defaultValue: modalInfo?.height || "",
                         }}
                         prependColors="white"

@@ -32,6 +32,11 @@ const buttonThemes = {
   `,
 };
 
+export const FlexContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+`;
+
 export const ButtonComponents = styled.button`
   text-align: center;
   font-weight: bold;

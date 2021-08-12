@@ -82,9 +82,34 @@ export const Products = ({ products }) => {
       });
     }
   };
-
+  
   const handleAction = async (event, ref) => {
     event.preventDefault();
+    const form = new FormData(ref.current);
+    const objectParam = {
+      name: form.get("name"),
+      description: form.get("description"),
+      price: form.get("price"),
+      offer: form.get("offer"),
+      width: form.get("width"),
+      height: form.get("height"),
+    };
+
+    if (
+      !objectParam.name ||
+      !objectParam.price ||
+      !objectParam.width ||
+      !objectParam.height
+    ) {
+      console.error("Se requieren ciertos datos para actualizar");
+      setAlertMessage({
+        text: "Se requieren los campos: Nombre, precio, ancho, imágen y alto",
+        theme: "bad",
+        title: "Error:",
+      });
+      return;
+    }
+
     setLoading(true);
     let setterVideoUrl;
     let setterFileUrl;
@@ -160,20 +185,11 @@ export const Products = ({ products }) => {
     }
 
     const action = modalInfo ? useEditDB : useCreateDB;
-    const form = new FormData(ref.current);
     const objectUrl = {
       src: setterFileUrl,
       src_video: setterVideoUrl || "",
       file_name: file?.name,
       file_video_name: fileVideo?.name || "",
-    };
-    const objectParam = {
-      name: form.get("name"),
-      description: form.get("description"),
-      price: form.get("price"),
-      offer: form.get("offer"),
-      width: form.get("width"),
-      height: form.get("height"),
     };
 
     try {
@@ -212,6 +228,16 @@ export const Products = ({ products }) => {
 
   const handleOnChangeFile = async (event) => {
     // const $buttonTextFile = document.querySelector("input::-webkit-file-upload-button");
+    let sizeInMB = (event.target.files[0].size / (1024 * 1024)).toFixed(2);
+    console.log(sizeInMB);
+    if (sizeInMB >= 3) {
+      setAlertMessage({
+        text: `Esta imágen pesa más de 5 megas`,
+        theme: "bad",
+        title: "Error:",
+      });
+      return;
+    }
     setFile(event.target.files[0]);
     setFileURLBlob(URL?.createObjectURL(new File([ event.target.files[0] ], event.target.files[0].name, {
       type: "text/plain",

@@ -1,12 +1,11 @@
 import { Input } from "../Input"
 import { MdPhone, MdPhoneAndroid } from "react-icons/md";
 import { InformationComponent } from ".";
-import { useEdit } from "../../hooks/useEdit.js";
 import { useEffect, useRef } from "react";
 
-export const Contact_Information = () => {
-  const { contact_information } = useEdit();
-
+export const Contact_Information = ({
+  contact_information
+}) => {
   const inputHouseRef = useRef(null);
   const inputPrivateRef = useRef();
 

@@ -28,10 +28,49 @@ export const Badges = styled.section`
 
 export const Input = styled.input`
   padding: 10px;
-  margin: 10px;
+  margin: 10px 0;
   font-family: var(--font-1);
   background: none;
   border: none;
   outline: none;
   width: 100%;
+`;
+
+export const Img = styled.img`
+  width: 100%;
+  object-fit: cover;
+  min-height: 150px;
+`;
+
+export const ContainerImg = styled.div`
+  position: relative;
+  .edit {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    color: var(--color-light);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-dark);
+  }
+  .cancel {
+    position: absolute;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-weight: bold;
+    color: var(--color-light);
+    cursor: pointer;
+    left: 5px;
+    top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-dark);
+  }
 `;
