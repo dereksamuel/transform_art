@@ -1,32 +1,34 @@
 import { Badge, Badges, Input, Img, ContainerImg } from ".";
 import { MdTextFields, MdImage, MdClose, MdModeEdit } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const AboutUsInformation = ({
-  about_us
+  about_us,
+  inputsData,
+  setInputsData
 }) => {
-  const [inputsData, setInputsData] = useState([]);
 
   useEffect(() => {
     setInputsData(about_us);
-  }, [about_us]);
-  
+  }, [about_us, setInputsData]);
+
   const createInput = () => {
     const latestInput = document.querySelector(`.input${inputsData.length - 1}`);
     const textFields = inputsData.filter((input) => input.type === "text");
 
-    if (textFields.length) {
-      if (!latestInput?.value) {
-        latestInput.focus();
-        return;
-      }
-    }
+    // if (textFields.length) {
+    //   if (!latestInput?.value) {
+    //     latestInput.focus();
+    //     return;
+    //   }
+    // }
 
     setInputsData([
       ...inputsData,
       {
         data: "",
         type: "text",
+        createdDk: true,
       },
     ]);
     const timer = setTimeout(() => {
@@ -34,26 +36,28 @@ export const AboutUsInformation = ({
       clearTimeout(timer);
     }, 0);
   };
-  
-  const handleDelete = (event) => {
-    if (event.target.value === "") {
-      const filteredResponse = inputsData.filter((inputData, index) => index !== +event.target.id);
-      setInputsData(filteredResponse);
-      const timer = setTimeout(() => {
-        const latestInput = document.querySelector(`.input${+event.target.id}`);
-        if (latestInput) {
-          latestInput.value = filteredResponse[event.target.id].data;
-        }
-        clearTimeout(timer);
-      }, 0);
+
+  const handleChange = (event) => {
+    let copyInputs = JSON.parse(JSON.stringify(inputsData));// Talvez aquí
+    const myInputLocal = copyInputs.find((input) => input.id === event.target.id) || copyInputs[event.target.id];
+
+    if (myInputLocal) {
+      myInputLocal.data = event.target.value;
     } else {
-      let copyInputs = JSON.parse(JSON.stringify(inputsData));// Talvez aquí
-      const myInputLocal = copyInputs[event.target.id];
-      if (myInputLocal) {
-        myInputLocal.data = event.target.value;
-      }
-      setInputsData(copyInputs);
-      // console.log(inputsData, myInputLocal);//FIXME: Arregla el problema de borrar y luego no registra valor
+      throw new Error("The input is not the same that me");
+    }
+
+    setInputsData(copyInputs);
+  };
+  
+  const handleDelete = (event, id) => {
+    handleChange(event);
+    if (event.target.value === "") {
+      const newInputsData = inputsData.filter((input, index) => {
+        return input.id ? input.id !== id : index !== +id;
+      });
+  
+      setInputsData(newInputsData);
     }
   };
 
@@ -72,13 +76,22 @@ export const AboutUsInformation = ({
         {
           inputsData?.length ? inputsData.map((input, index) => {
             return input.type === "text" ? (
-              <Input
-                placeholder="Escribe tu párrafo aquí"
-                key={input.id || index}
-                id={index}
-                className={`input${index}`}
-                defaultValue={input.data}
-                onChange={handleDelete} />
+              <div key={input.id || index}>
+                {
+                  input.createdDk ? <Input
+                    placeholder="Escribe tu párrafo aquí"
+                    id={index}
+                    className={`input${index}`}
+                    value={input.data}
+                    onChange={(event) => handleDelete(event, input.id || index)} /> :
+                    <Input
+                      placeholder="Escribe tu párrafo aquí"
+                      id={input.id || index}
+                      className={`input${input.id || index}`}
+                      defaultValue={input.data}
+                      onChange={(event) => handleDelete(event, input.id || index)} />
+                }
+              </div>
             ) : (
               <ContainerImg key={input.id || index}>
                 <div className="cancel" onClick={deleteImage}>

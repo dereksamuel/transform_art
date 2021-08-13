@@ -1,19 +1,18 @@
 import { Input } from "../Input"
 import { MdPhone, MdPhoneAndroid } from "react-icons/md";
 import { InformationComponent } from ".";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 export const Contact_Information = ({
-  contact_information
+  contact_information,
+  inputHouseRef,
+  inputPrivateRef
 }) => {
-  const inputHouseRef = useRef(null);
-  const inputPrivateRef = useRef();
 
   useEffect(() => {
     inputHouseRef.current.value = contact_information[0]?.phone_number_house;
     inputPrivateRef.current.value = contact_information[0]?.phone_number_personal;
-  }, [contact_information]);
-
+  }, [contact_information, inputHouseRef, inputPrivateRef]);
 
   return (
     <InformationComponent>

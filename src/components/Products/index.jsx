@@ -10,6 +10,7 @@ import { Alert } from "../Alert/index.jsx";
 import { useCreateDB } from "../../hooks/useCreateDB.js";
 import { useEditDB } from "../../hooks/useEditDB.js";
 import { storage, db } from "../../helpers/firebase";
+import Compressor from "compressorjs";
 
 export const Products = ({ products }) => {
   const [showModal, setShowModal] = useState(false);
@@ -28,6 +29,8 @@ export const Products = ({ products }) => {
 
   const [inputChange, setInputChange] = useState(false);
   const [inputChangeVideo, setInputChangeVideo] = useState(false);
+  
+  const [videoInject, setVideoInject] = useState(false);
 
   const ref = useRef();
 
@@ -187,9 +190,9 @@ export const Products = ({ products }) => {
     const action = modalInfo ? useEditDB : useCreateDB;
     const objectUrl = {
       src: setterFileUrl,
-      src_video: setterVideoUrl || "",
       file_name: file?.name,
-      file_video_name: fileVideo?.name || "",
+      src_video: !videoInject ? setterVideoUrl || "" : "",
+      file_video_name: !videoInject ? fileVideo?.name || "" : "",
     };
 
     try {
@@ -228,23 +231,40 @@ export const Products = ({ products }) => {
 
   const handleOnChangeFile = async (event) => {
     // const $buttonTextFile = document.querySelector("input::-webkit-file-upload-button");
+    new Compressor(event.target.files[0], {
+      quality: 0.7,
+      success: (result) => {
+        let sizeInMBresult = (result.size / (1024 * 1024)).toFixed(2);
+        if (sizeInMBresult >= 3) {
+          setAlertMessage({
+            text: `Esta imágen pesa 3 megas o más`,
+            theme: "bad",
+            title: "Error:",
+          });
+          return;
+        }
+
+        setFile(result);
+        setFileURLBlob(URL?.createObjectURL(new File([ result ], result.name, {
+          type: "text/plain",
+        })));
+      },
+    });
+
+  };
+
+  const handleOnChangeVideo = async (event) => {
     let sizeInMB = (event.target.files[0].size / (1024 * 1024)).toFixed(2);
-    console.log(sizeInMB);
     if (sizeInMB >= 3) {
+      setVideoInject(true);
       setAlertMessage({
-        text: `Esta imágen pesa más de 5 megas`,
+        text: `Este video pesa 3 megas o más`,
         theme: "bad",
         title: "Error:",
       });
       return;
     }
-    setFile(event.target.files[0]);
-    setFileURLBlob(URL?.createObjectURL(new File([ event.target.files[0] ], event.target.files[0].name, {
-      type: "text/plain",
-    })));
-  };
-
-  const handleOnChangeVideo = async (event) => {
+    setVideoInject(false);
     setFileVideo(event.target.files[0]);
     setVideoURLBlob(URL?.createObjectURL(new File([ event.target.files[0] ], event.target.files[0].name, {
       type: "text/plain",
