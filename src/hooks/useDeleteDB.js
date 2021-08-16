@@ -1,10 +1,13 @@
 import { db } from "../helpers/firebase";
 
-export const useCreateDB = ({
+export const useDeleteDB = ({
   collection,
+  docId,
   data = null
 }) => {
+  if (!docId) return;
   return db
     .collection(collection)
-    .add(data);
+    .doc(docId)
+    .delete();
 };

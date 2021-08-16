@@ -78,6 +78,7 @@ a {
   justify-content: center;
   align-items: center;
   height: calc(100vh - 139.95px);
+  min-height: 500px;
 }
 
 .EditApp {

@@ -1,10 +1,12 @@
 import { db } from "../helpers/firebase";
 
-export const useCreateDB = ({
+export const useSetDB = ({
   collection,
+  docId,
   data = null
 }) => {
   return db
     .collection(collection)
-    .add(data);
+    .doc(docId)
+    .set(data);
 };

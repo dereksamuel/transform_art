@@ -5,7 +5,9 @@ import { useEffect } from "react";
 export const AboutUsInformation = ({
   about_us,
   inputsData,
-  setInputsData
+  setInputsData,
+  deleteInputsData,
+  setDeleteInputsData,
 }) => {
 
   useEffect(() => {
@@ -56,7 +58,14 @@ export const AboutUsInformation = ({
       const newInputsData = inputsData.filter((input, index) => {
         return input.id ? input.id !== id : index !== +id;
       });
-  
+      const deleteInput = inputsData.find((input, index) => {
+        return input.id ? input.id === id : index === +id;
+      });
+
+      setDeleteInputsData([
+        ...deleteInputsData,
+        deleteInput,
+      ]);
       setInputsData(newInputsData);
     }
   };
@@ -70,11 +79,14 @@ export const AboutUsInformation = ({
       ?.remove();
   };
 
+  const handleShowModal = () => {
+  };
+
   return (
     <>
       <div className="Inputs">
         {
-          inputsData?.length ? inputsData.map((input, index) => {
+          inputsData?.length ? inputsData.slice().sort((a, b) => a.INDEX - b.INDEX).map((input, index) => {
             return input.type === "text" ? (
               <div key={input.id || index}>
                 {
@@ -108,7 +120,7 @@ export const AboutUsInformation = ({
       </div>
       <Badges>
         <Badge onClick={createInput}><MdTextFields /></Badge>
-        <Badge><MdImage /></Badge>
+        <Badge onClick={handleShowModal}><MdImage /></Badge>
       </Badges>
     </>
   );
