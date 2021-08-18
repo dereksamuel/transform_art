@@ -1,0 +1,14 @@
+import { AboutUsContent } from "../components/AboutUsContent/index.jsx";
+import { Title } from "../components/Title/index.jsx";
+import { useEdit } from "../hooks/useEdit.js";
+
+export const AboutUs = () => {
+  const editApp = useEdit();
+
+  return (
+    <div className="AboutUs">
+      <Title>Sobre nosotros</Title>
+      <AboutUsContent about_us={editApp.about_us}></AboutUsContent>
+    </div>
+  );
+};

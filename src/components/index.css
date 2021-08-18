@@ -89,6 +89,47 @@ a {
   min-height: 500px;
 }
 
+.Home, .AboutUs {
+  min-height: calc(100vh - 139.95px);
+}
+
+.AboutUs {
+  padding: 20px;
+}
+
 h1, h2, h3 {
   color: var(--color-dark);
+}
+
+::-webkit-scrollbar {
+  width: 8px;     /* Tamaño del scroll en vertical */
+  height: 8px;    /* Tamaño del scroll en horizontal */
+  padding: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #354946;
+  border-radius: 4px;
+  margin: 1px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #415c57;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #52726c;
+}
+
+::-webkit-scrollbar-track {
+  background: #272626;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+  background: rgb(32, 31, 31);
 }

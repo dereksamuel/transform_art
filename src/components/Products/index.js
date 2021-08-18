@@ -34,7 +34,20 @@ export const ProductsComponent = styled.ul`
       vertical-align: middle;
     }
   }
+
   li.ProductItem:hover {
     background: var(--color-light_gray);
+  }
+
+  @media screen and (max-width: 768px) {
+    & {
+      grid-template-columns: 1fr;
+    }
+    li.ProductItem {
+      max-width: 100%;
+      img {
+        width: 100%;
+      }
+    }
   }
 `;

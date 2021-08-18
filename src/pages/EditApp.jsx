@@ -10,13 +10,14 @@ import { useEdit } from "../hooks/useEdit.js";
 import { useState, useRef } from "react";
 import { useCreateDB } from "../hooks/useCreateDB.js";
 import { useEditDB } from "../hooks/useEditDB.js";
-import { useSetDB } from "../hooks/useSetDB.js";
 import { useDeleteDB } from "../hooks/useDeleteDB.js";
+import { Alert } from "../components/Alert/index.jsx";
 
 export const EditApp = () => {
   const editApp = useEdit();
   const [inputsData, setInputsData] = useState([]);
   const [deleteInputsData, setDeleteInputsData] = useState([]);
+  const [alertMessage, setAlertMessage] = useState("");
   const inputHouseRef = useRef(null);
   const inputPrivateRef = useRef();
 
@@ -57,32 +58,50 @@ export const EditApp = () => {
           await deleteDB({
             collection: "about_us",
             docId: deleteInputData.id,
-          }).catch((error) => {
-            console.error(error);
+          })?.catch((error) => {
+            console.error("[fallo al borrar]: ", error);
           });
         });
         setDeleteInputsData([]);
       }
-      saveData.inputsData.map((inputData) => {
+      saveData.inputsData.map(async (inputData) => {
+        setDeleteInputsData([]);
         if (!editApp.about_us[inputData.INDEX]) {
-          actionCreate({
+          await actionCreate({
             collection: "about_us",
             data: inputData,
-          }).then(() => {
-            console.log("Creado con éxito");
-          }).catch((error) => {
+          })?.catch((error) => {
             console.error(error);
+            setAlertMessage({
+              text: "No se ha creado con éxito",
+              theme: "bad",
+              title: "Error:",
+            });
+          });
+
+          setAlertMessage({
+            text: "Se ha creado con éxito",
+            theme: "good",
+            title: "Éxito:",
           });
           return "";
         }
-        action({
+        await action({
           collection: "about_us",
           docId: inputData.id,
           data: inputData,
-        }).then(() => {
-          console.log("Creado o actualizado con éxito");
-        }).catch((error) => {
+        })?.catch((error) => {
           console.error(error);
+          setAlertMessage({
+            text: "No se ha guardado con éxito",
+            theme: "bad",
+            title: "Error:",
+          });
+        });
+        setAlertMessage({
+          text: "Se ha guardado con éxito",
+          theme: "good",
+          title: "Éxito:",
         });
       });
     }
@@ -90,6 +109,9 @@ export const EditApp = () => {
 
   return (
     <div className="EditApp">
+      {
+        alertMessage && <Alert text={alertMessage.text} deleteAlert={() => setAlertMessage(false)} theme={alertMessage.theme} title={alertMessage.title} />
+      }
       <Title>Cambiar información</Title>
       <SubTitle>Productos:</SubTitle>
       <Products products={editApp.products}></Products>
@@ -101,10 +123,12 @@ export const EditApp = () => {
       ></ContactInformation>
       <SubTitle>Sobre nosotros(información):</SubTitle>
       <AboutUsInformation
+        //FIXME: corregir que se guarda y me desordena los indices
         deleteInputsData={deleteInputsData}
         setDeleteInputsData={setDeleteInputsData}
         about_us={editApp.about_us}
         inputsData={inputsData}
+        products={editApp.products}
         setInputsData={setInputsData} />
       <FlexContainer>
         <Button onClick={handleSaveData}>Guardar</Button>

@@ -105,6 +105,7 @@ export const NavBar = styled.section`
       animation: fadeInX 0.5s forwards alternate;
       will-change: opacity right top display;
       transition: 0.5s all;
+      z-index: 500;
       svg {
         z-index: 5;
       }

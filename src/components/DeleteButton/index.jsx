@@ -14,7 +14,6 @@ export const DeleteButton = ({ functionClick, modalInfo, timer, disabled }) => {
             <small>¿Está seguro?</small>
             <Button type="button" theme="light" onClick={() => {
               setDeleteMode(false);
-              console.log(modalInfo.id);
               functionClick(modalInfo, timer);
             }}
             padding="5px">Si</Button>

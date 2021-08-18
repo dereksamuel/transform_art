@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { EditApp } from "../pages/EditApp";
 import firebase from "../helpers/firebase.js";//FIXME: HIA
+import { AboutUs } from "../pages/AboutUs";
 
 export default function App() {
   const { loading, currentUser } = useUser();
@@ -35,6 +36,7 @@ export default function App() {
         <Header />
         <Switch>
           <Route exact path="/" component={() => <Home />} />
+          <Route exact path="/about_us" component={() => <AboutUs />} />
           <Route exact path="/login" component={() => <Login currentUser={currentUser} />} />
           {/* <Route exact path="/create_my_picture" component={() => <Home />} /> */}
           {

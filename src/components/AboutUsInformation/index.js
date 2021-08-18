@@ -36,6 +36,21 @@ export const Input = styled.input`
   width: 100%;
 `;
 
+export const ImgContainer = styled.figure`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
+  gap: 15px;
+  margin: 1rem;
+  img {
+    max-width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  img.select {
+    border: 1px solid var(--color-secondary);
+  }
+`;
+
 export const Img = styled.img`
   width: 100%;
   object-fit: cover;

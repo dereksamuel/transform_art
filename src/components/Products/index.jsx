@@ -241,6 +241,7 @@ export const Products = ({ products }) => {
             theme: "bad",
             title: "Error:",
           });
+          console.log(event.target.value);
           return;
         }
 

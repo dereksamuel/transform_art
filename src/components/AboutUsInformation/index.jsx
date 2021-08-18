@@ -1,35 +1,30 @@
-import { Badge, Badges, Input, Img, ContainerImg } from ".";
+import { Badge, Badges, Input, Img, ContainerImg, ImgContainer } from ".";
 import { MdTextFields, MdImage, MdClose, MdModeEdit } from "react-icons/md";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Modal } from "../Modal/index.jsx";
 
 export const AboutUsInformation = ({
   about_us,
   inputsData,
   setInputsData,
   deleteInputsData,
+  products,
   setDeleteInputsData,
 }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [modalSelected, setModalSelected] = useState({});
+  // const [arrayImages, setArrayImages] = useState([]);
 
   useEffect(() => {
     setInputsData(about_us);
   }, [about_us, setInputsData]);
 
-  const createInput = () => {
-    const latestInput = document.querySelector(`.input${inputsData.length - 1}`);
-    const textFields = inputsData.filter((input) => input.type === "text");
-
-    // if (textFields.length) {
-    //   if (!latestInput?.value) {
-    //     latestInput.focus();
-    //     return;
-    //   }
-    // }
-
+  const createInput = (type = "text", data = "") => {
     setInputsData([
       ...inputsData,
       {
-        data: "",
-        type: "text",
+        data,
+        type,
         createdDk: true,
       },
     ]);
@@ -70,20 +65,97 @@ export const AboutUsInformation = ({
     }
   };
 
-  const deleteImage = (event) => {
-    const filteredResponse = inputsData.filter((inputData, index) => index !== +event.target.id);
-    setInputsData(filteredResponse);
-    document
-      .querySelector(".Inputs")
-      .querySelector(`.${event.target.classList[0]}`)
-      ?.remove();
+  const deleteImage = (event, id) => {
+    const newInputsData = inputsData.filter((input, index) => {
+      return input.id ? input.id !== id : index !== +id;
+    });
+    const deleteInput = inputsData.find((input, index) => {
+      return input.id ? input.id === id : index === +id;
+    });
+
+    setDeleteInputsData([
+      ...deleteInputsData,
+      deleteInput,
+    ]);
+    setInputsData(newInputsData);
   };
 
-  const handleShowModal = () => {
+  const handleShowModal = (value = true, product) => {
+    // if (product) {
+    //   setModalInfo(product);
+    // } else {
+    //   setModalInfo({});
+    // }
+    // if (value === false) {
+    //   cleanData();
+    // }
+    setShowModal(value);
+  };
+
+  const handleShowModalImage = () => {
+    handleShowModal(true);
+  };
+
+  const changeImg = (id) =>  {
+    const findMe = inputsData.find((inputData, indexInput) => inputData.id ? inputData.id === id : indexInput === id);
+    // setArrayImages([
+    //   ...arrayImages,
+    //   findMe,
+    // ]);
+    setModalSelected(findMe);
+    handleShowModal(true);
+  }
+
+  const handlePutImage = (product) => {
+    if (Object.keys(modalSelected).length) {
+      const inputsDataFiltered = inputsData.map((inputData) => {
+        if (inputData.data === modalSelected.data) {
+          inputData = {
+            ...inputData,
+            data: product.src,
+          };
+        }
+        return inputData;
+      });
+      // const inputsDataFilteredImages = arrayImages.map((arrayImages) => {
+      //   if (arrayImages.data === modalSelected.data) {
+      //     arrayImages = {
+      //       ...arrayImages,
+      //       data: product.src,
+      //     };
+      //   }
+      //   return arrayImages;
+      // });
+      // setArrayImages(inputsDataFilteredImages);
+
+      setInputsData(inputsDataFiltered);
+      handleShowModal(false);
+      setModalSelected({});
+    } else {
+      createInput("file", product.src);
+      handleShowModal(false);
+      setModalSelected({});
+    }
   };
 
   return (
     <>
+      {
+        showModal && <Modal onClick={handleShowModal} closeButton>
+          <ImgContainer>
+            {
+              products?.map((product, index) => (
+                <img
+                  onClick={() => handlePutImage(product)}
+                  src={product.src}
+                  alt={product.name}
+                  key={product.id || index}
+                  className={modalSelected.data === product.src ? "select" : "unselect"} />
+              ))
+            }
+          </ImgContainer>
+        </Modal>
+      }
       <div className="Inputs">
         {
           inputsData?.length ? inputsData.slice().sort((a, b) => a.INDEX - b.INDEX).map((input, index) => {
@@ -106,11 +178,11 @@ export const AboutUsInformation = ({
               </div>
             ) : (
               <ContainerImg key={input.id || index}>
-                <div className="cancel" onClick={deleteImage}>
+                <div className="cancel" onClick={(event) => deleteImage(event, input.id || index)}>
                   <MdClose />
                 </div>
                 <Img src={input.data} id={index} className={`input${index}`} />
-                <div className="edit">
+                <div className="edit" onClick={() => changeImg(input.id || index)}>
                   <MdModeEdit />
                 </div>
               </ContainerImg>
@@ -119,8 +191,8 @@ export const AboutUsInformation = ({
         }
       </div>
       <Badges>
-        <Badge onClick={createInput}><MdTextFields /></Badge>
-        <Badge onClick={handleShowModal}><MdImage /></Badge>
+        <Badge onClick={() => createInput("text", "")}><MdTextFields /></Badge>
+        <Badge onClick={handleShowModalImage}><MdImage /></Badge>
       </Badges>
     </>
   );
