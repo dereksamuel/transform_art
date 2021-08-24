@@ -2,8 +2,14 @@ import { Container } from ".";
 
 export const AboutUsContent = ({ about_us }) => {
   const evaluateLinkOrText = (item) => {
+    const splitText = item.data.split("https");
+    console.log(splitText);
     let regex = new RegExp(/^https?:\/\/[\w\-]+(\.[\w\-]+)+[/#?]?.*$/);
-    return !item.data.match(regex) ? <p>{item.data}</p> : <a href={item.data} target="_blank">{item.data}</a>;
+    return !item.data.match(regex) ? <p>{item.data}</p> : splitText.map((text) => {
+      if (text) {
+        return <a href={`https${text}`} target="_blank">https{text}</a>
+      }
+    });
   };
 
   return (

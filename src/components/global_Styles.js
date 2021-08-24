@@ -56,6 +56,13 @@ export const NavBar = styled.section`
     text-decoration: none;
   }
 
+  .Links__item--icon--radioactive {
+    color: var(--color-radioactive);
+    font-size: 40px;
+    text-decoration: none;
+    animation: radioactive 0.5s infinite alternate;
+  }
+
   .NavBar__text {
    color: var(--color-light);
   }
@@ -157,6 +164,17 @@ export const NavBar = styled.section`
     }
     .Links__menu {
       padding: 0;
+    }
+  }
+
+  @keyframes radioactive {
+    0% {
+      color: var(--color-radioactive);
+      transform: scale(0.9);
+    }
+    100% {
+      color: #e64444;
+      transform: scale(1);
     }
   }
 

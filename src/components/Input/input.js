@@ -12,6 +12,9 @@ export const Prepend = styled.span`
     return prependColors === "white" ? "var(--color-dark)" : "var(--color-light)";
   }};
   font-size: 20px;
+  &.last {
+    border-radius: 0px 12px 12px 0px;
+  }
 `;
 
 export const Label = styled.label`

@@ -7,15 +7,19 @@ import { Footer } from "./Footer/index.jsx";
 import { Header } from "./Header/index.jsx";
 import "./index.css";
 import { useUser } from "../hooks/useUser";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { EditApp } from "../pages/EditApp";
-import firebase from "../helpers/firebase.js";//FIXME: HIA
 import { AboutUs } from "../pages/AboutUs";
+import firebase from "../helpers/firebase.js";//FIXME: HIA
+import { Picture } from "../pages/Picture";
+import { useEdit } from "../hooks/useEdit";
+import { PictureById } from "./PictureById";
 
 export default function App() {
   const { loading, currentUser } = useUser();
   const rememberMe = useSelector((state) => state.login.rememberMe);
+  const editApp = useEdit();
 
   useEffect(() => {
     verifyRememberMe();
@@ -35,13 +39,14 @@ export default function App() {
       <Router>
         <Header />
         <Switch>
-          <Route exact path="/" component={() => <Home />} />
-          <Route exact path="/about_us" component={() => <AboutUs />} />
+          <Route exact path="/" component={() => <Home editApp={editApp} />} />
+          <Route exact path="/about_us" component={() => <AboutUs editApp={editApp} />} />
           <Route exact path="/login" component={() => <Login currentUser={currentUser} />} />
-          {/* <Route exact path="/create_my_picture" component={() => <Home />} /> */}
+          <Route exact path="/pictures" component={() => <Picture editApp={editApp} />} />
+          <Route exact path="/picture/:id" component={() => <PictureById editApp={editApp} />} />
           {
             currentUser ? (
-              <Route exact path="/edit_app" component={() => <EditApp />} />
+              <Route exact path="/edit_app" component={() => <EditApp editApp={editApp} />} />
             ) : (
               <Redirect exact to="/login" />
             )

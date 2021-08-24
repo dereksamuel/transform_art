@@ -13,31 +13,36 @@ import { useEditDB } from "../hooks/useEditDB.js";
 import { useDeleteDB } from "../hooks/useDeleteDB.js";
 import { Alert } from "../components/Alert/index.jsx";
 
-export const EditApp = () => {
-  const editApp = useEdit();
+//FIXME: EL índice se altera en ocasiones FALTA ESO
+
+export const EditApp = ({ editApp }) => {
   const [inputsData, setInputsData] = useState([]);
   const [deleteInputsData, setDeleteInputsData] = useState([]);
   const [alertMessage, setAlertMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const inputHouseRef = useRef(null);
   const inputPrivateRef = useRef();
 
   const handleSaveData = async () => {
-    const action = !editApp.about_us.length ? useCreateDB : useEditDB;
+    setLoading(true);
+    const action = useEditDB;
     const actionCreate = useCreateDB;
     const update = useEditDB;
     const deleteDB = useDeleteDB;
     const ID = editApp.contact_information[0].id;
     const saveData = {
-      inputsData: inputsData.map((inputData, index) => ({
+      inputsData: inputsData.map((inputData, index) => !inputData.INDEX ? ({
         ...inputData,
         createdDk: false,
         INDEX: index,
+      }) : ({
+        ...inputData,
+        createdDk: false,
       })),
       inputPrivateRef: inputPrivateRef.current.value,
       inputHouseRef: inputHouseRef.current.value,
     };
 
-    console.log(saveData.inputHouseRef);
     if (
       editApp.contact_information[0]?.phone_number_house !== saveData.inputHouseRef ||
       editApp.contact_information[0]?.phone_number_personal !== saveData.inputPrivateRef
@@ -50,23 +55,15 @@ export const EditApp = () => {
           phone_number_personal: saveData.inputPrivateRef,
         },
       });
+      setLoading(false);
     }
 
     if (editApp.about_us !== saveData.inputsData) {
-      if (deleteInputsData.length) {
-        deleteInputsData.map(async (deleteInputData) => {
-          await deleteDB({
-            collection: "about_us",
-            docId: deleteInputData.id,
-          })?.catch((error) => {
-            console.error("[fallo al borrar]: ", error);
-          });
-        });
-        setDeleteInputsData([]);
-      }
+      setLoading(true);
       saveData.inputsData.map(async (inputData) => {
         setDeleteInputsData([]);
-        if (!editApp.about_us[inputData.INDEX]) {
+        const findMe = editApp.about_us.find((item) => item.id === inputData.id);
+        if (!findMe) {
           await actionCreate({
             collection: "about_us",
             data: inputData,
@@ -77,33 +74,73 @@ export const EditApp = () => {
               theme: "bad",
               title: "Error:",
             });
+            setLoading(false);
           });
+          setLoading(false);
 
           setAlertMessage({
             text: "Se ha creado con éxito",
             theme: "good",
             title: "Éxito:",
           });
-          return "";
-        }
-        await action({
-          collection: "about_us",
-          docId: inputData.id,
-          data: inputData,
-        })?.catch((error) => {
-          console.error(error);
+        } else {
+          await action({
+            collection: "about_us",
+            docId: inputData.id,
+            data: inputData,
+          })?.catch((error) => {
+            console.error(error);
+            setLoading(false);
+            setAlertMessage({
+              text: "No se ha guardado con éxito",
+              theme: "bad",
+              title: "Error:",
+            });
+          });
           setAlertMessage({
-            text: "No se ha guardado con éxito",
+            text: "Se ha guardado con éxito",
+            theme: "good",
+            title: "Éxito:",
+          });
+          setLoading(false);
+        }
+        if (deleteInputsData.length) {
+          deleteInputsData.map(async (deleteInputData) => {
+            await deleteDB({
+              collection: "about_us",
+              docId: deleteInputData.id,
+            })?.catch((error) => {
+              console.error("[fallo al borrar]: ", error);
+            });
+          });
+          setLoading(false);
+          setDeleteInputsData([]);
+        }
+      });
+    }
+    if (deleteInputsData.length) {
+      setLoading(true);
+      deleteInputsData.map(async (deleteInputData) => {
+        await deleteDB({
+          collection: "about_us",
+          docId: deleteInputData.id,
+        })?.catch((error) => {
+          console.error("[fallo al borrar]: ", error);
+          setAlertMessage({
+            text: "Se ha borrado erróneamente",
             theme: "bad",
             title: "Error:",
           });
+          setLoading(false);
         });
         setAlertMessage({
-          text: "Se ha guardado con éxito",
+          text: "Se ha borrado con éxito",
           theme: "good",
           title: "Éxito:",
         });
+        setLoading(false);
       });
+      setDeleteInputsData([]);
     }
   };
 
@@ -131,7 +168,7 @@ export const EditApp = () => {
         products={editApp.products}
         setInputsData={setInputsData} />
       <FlexContainer>
-        <Button onClick={handleSaveData}>Guardar</Button>
+        <Button onClick={handleSaveData} disabled={loading}>Guardar</Button>
       </FlexContainer>
     </div>
   );

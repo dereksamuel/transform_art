@@ -41,6 +41,8 @@ export const ImgContainer = styled.figure`
   grid-template-columns: repeat(auto-fill, minmax(11.5rem, 1fr));
   gap: 15px;
   margin: 1rem;
+  overflow: auto;
+  max-height: 678px;
   img {
     max-width: 100%;
     object-fit: cover;

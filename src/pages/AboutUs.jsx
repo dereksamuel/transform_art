@@ -1,10 +1,7 @@
 import { AboutUsContent } from "../components/AboutUsContent/index.jsx";
 import { Title } from "../components/Title/index.jsx";
-import { useEdit } from "../hooks/useEdit.js";
 
-export const AboutUs = () => {
-  const editApp = useEdit();
-
+export const AboutUs = ({ editApp }) => {
   return (
     <div className="AboutUs">
       <Title>Sobre nosotros</Title>

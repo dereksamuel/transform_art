@@ -2,7 +2,6 @@
 import { Title } from "../Title/index.jsx";
 import Decorative1 from "../../assets/decorative_1.png";
 import Decorative2 from "../../assets/decorative_2.png";
-import Decorative3 from "../../assets/decorative_3.png";
 import { AiOutlineWhatsApp } from "react-icons/ai";
 import { MdPhone } from "react-icons/md";
 import { HomeComponent } from "./index.js";
@@ -20,7 +19,7 @@ export const HomeContent = ({ contact_information }) => {
             enfocamos en CUADROS DECORATIVOS,
             ¿te llamó la atención algo? contáctanos en
             estas aplicaciones:</p>
-            <a className="whatsapplink" href={`https://wa.me/1${contact_information[0]?.phone_number_personal}`} target="_blank" rel="noreferrer">
+            <a className="whatsapplink" href={`https://wa.me/57${contact_information[0]?.phone_number_personal}`} target="_blank" rel="noreferrer">
               <AiOutlineWhatsApp className="whatsapp" />
               WhatsApp: {
                 contact_information[0]?.phone_number_personal

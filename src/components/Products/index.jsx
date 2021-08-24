@@ -237,7 +237,7 @@ export const Products = ({ products }) => {
         let sizeInMBresult = (result.size / (1024 * 1024)).toFixed(2);
         if (sizeInMBresult >= 3) {
           setAlertMessage({
-            text: `Esta imágen pesa 3 megas o más`,
+            text: `Esta imágen pesa 3 mega bytes o más`,
             theme: "bad",
             title: "Error:",
           });
@@ -255,11 +255,11 @@ export const Products = ({ products }) => {
   };
 
   const handleOnChangeVideo = async (event) => {
-    let sizeInMB = (event.target.files[0].size / (1024 * 1024)).toFixed(2);
-    if (sizeInMB >= 3) {
+    let sizeInMB = event.target.files[0] ? (event.target.files[0].size / (1024 * 1024)).toFixed(2) : 25;
+    if (sizeInMB >= 20) {
       setVideoInject(true);
       setAlertMessage({
-        text: `Este video pesa 3 megas o más`,
+        text: `Este video pesa 20 mega bytes o más`,
         theme: "bad",
         title: "Error:",
       });

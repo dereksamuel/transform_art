@@ -1,6 +1,7 @@
 import { CarrouselContainer } from ".";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 export const Carrousel = ({ products }) => {
   const ref = useRef(null);
@@ -11,7 +12,6 @@ export const Carrousel = ({ products }) => {
 
       const observer = new IntersectionObserver(entries => {
         for (const { target, isIntersecting } of entries) {
-          console.log(entries);
           if (isIntersecting) {
             // target.setAttribute("src", target.dataset.src)
             target.setAttribute("style", "opacity: 1;")
@@ -45,11 +45,18 @@ export const Carrousel = ({ products }) => {
       </button>
       <ul id="carrousel_home" ref={ref}>
         {
-          products?.map((product, index) => index > 9 ? <></> : (
-            <li key={product.id}>
-              <img src={product.src} alt={product.name} className="img_carrousell" />
-            </li>
-          ))
+          products?.map((product, index) => !(index > 9) ? (
+            <Link to={{
+              pathname: `/picture/${product.id}`,
+              state: {
+                products
+              },
+            }} key={product.id}>
+              <li>
+                <img src={product.src} alt={product.name} className="img_carrousell" />
+              </li>
+            </Link>
+          ) : "")
         }
       </ul>
       <button className="arrow arrow-right" onClick={() => handleScroll()}>

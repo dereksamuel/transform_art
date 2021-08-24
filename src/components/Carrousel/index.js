@@ -52,6 +52,7 @@ export const CarrouselContainer = styled.div`
     height: 300px;
     opacity: 0.9;
     transition: 0.25s all;
+    will-change: transition opacity;
     img {
       scroll-snap-align: center;
       transition: 0.25s all;
@@ -64,9 +65,26 @@ export const CarrouselContainer = styled.div`
       cursor: pointer;
     }
   }
-  /* @media screen and (max-width: 800px) {
+  @media screen and (max-width: 800px) {
     ul {
-      overflow: auto;
+      li {
+        margin: 50px 100px;
+      }
     }
-  } */
+  }
+  @media screen and (max-width: 500px) {
+    ul {
+      li {
+        margin: 50px;
+      }
+    }
+  }
+  @media screen and (max-width: 360px) {
+    ul {
+      li {
+        margin: 50px;
+        margin-left: 0;
+      }
+    }
+  }
 `;
