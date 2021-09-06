@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 
 export const Text = styled.h3`
-  background: ${({ color }) => color ? color : "var(--color-light_gray)"};
-  color: ${({ color }) => color ? "var(--color-light)" : "var(--color-dark)"};
+  background: ${({ color }) => color ? color : "#2d2b2b"};
+  color: ${({ color }) => color ? "var(--color-light)" : "var(--color-radioactive)"};
   cursor: ${({ color }) => color && "pointer"};
   font-style: italic;
   padding: ${({ color }) => color ? "5px 15px" : "15px 30px"};

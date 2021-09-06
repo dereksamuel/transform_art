@@ -15,6 +15,7 @@ import firebase from "../helpers/firebase.js";//FIXME: HIA
 import { Picture } from "../pages/Picture";
 import { useEdit } from "../hooks/useEdit";
 import { PictureById } from "./PictureById";
+import { Cart } from "../pages/Cart.jsx";
 
 export default function App() {
   const { loading, currentUser } = useUser();
@@ -44,6 +45,7 @@ export default function App() {
           <Route exact path="/login" component={() => <Login currentUser={currentUser} />} />
           <Route exact path="/pictures" component={() => <Picture editApp={editApp} />} />
           <Route exact path="/picture/:id" component={() => <PictureById editApp={editApp} />} />
+          <Route exact path="/cart" component={() => <Cart />} />
           {
             currentUser ? (
               <Route exact path="/edit_app" component={() => <EditApp editApp={editApp} />} />

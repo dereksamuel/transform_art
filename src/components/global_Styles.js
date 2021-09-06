@@ -37,6 +37,7 @@ export const NavBar = styled.section`
   .NavBar__image {
     max-width: 150px;
     height: auto;
+    margin-top: -5px;
   }
 
   .Links__item a {
@@ -60,7 +61,7 @@ export const NavBar = styled.section`
     color: var(--color-radioactive);
     font-size: 40px;
     text-decoration: none;
-    animation: radioactive 0.5s infinite alternate;
+    animation: radioactiveTextt 0.5s infinite alternate;
   }
 
   .NavBar__text {
@@ -167,7 +168,7 @@ export const NavBar = styled.section`
     }
   }
 
-  @keyframes radioactive {
+  @keyframes radioactiveTextt {
     0% {
       color: var(--color-radioactive);
       transform: scale(0.9);

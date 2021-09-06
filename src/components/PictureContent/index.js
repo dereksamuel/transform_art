@@ -6,7 +6,7 @@ export const Container = styled.ul`
   gap: 80px;
   max-width: 1500px;
   grid-template-columns: repeat(auto-fill, minmax(11.5rem, 250px));
-  justify-content: center;
+  justify-content: ${(props) => props.from ? "start" : "center"};
 `;
 
 export const Price = styled.p`
@@ -99,7 +99,7 @@ export const PictureComponent = styled.div`
       max-height: 380px;
       width: 100%;
       object-fit: contain;
-      background: #091714;
+      background: #090d17;
     }
     /* .video_play {
       height: 200px;
@@ -182,6 +182,15 @@ export const PictureComponent = styled.div`
   article {
     padding: 10px;
   }
+  .totalMe {
+    /* margin-left: 10px; */
+    font-size: 16px;
+    font-style: italic;
+    /* color: #4ba08f;
+    background: #55a6b4; */
+    padding: 14px;
+    color: var(--color-dark);
+  }
   img {
     max-width: 300px;
     height: 320px;
@@ -213,7 +222,15 @@ export const PictureComponent = styled.div`
       opacity: 1;
     }
   }
-  @media screen and (max-width: 1218px) {
+  @media screen and (max-width: 1200px) {
+    .ContainerCard {
+      video, img {
+        max-width: 430px;
+        min-width: 430px;
+      }
+    }
+  }
+  @media screen and (max-width: 790px) {
     .ContainerCard {
       flex-wrap: wrap;
       flex-direction: column-reverse;
@@ -257,6 +274,9 @@ export const PictureComponent = styled.div`
       figure {
         /* min-height: 100%;
         margin-bottom: 200px; */
+        video {
+          min-height: 380px;
+        }
       }
       .flex {
         flex-wrap: wrap;

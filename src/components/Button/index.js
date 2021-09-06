@@ -51,6 +51,7 @@ export const ButtonComponents = styled.button`
   transition: 0.1s all;
   &:disabled {
     opacity: 0.58;
+    cursor: auto;
   }
   &:hover {
     transform: scale(1.01);

@@ -2,7 +2,7 @@
 import { Container } from ".";
 import { PictureItem } from "./PictureItem";
 
-export const PictureContent = ({ products, id, number }) => {
+export const PictureContent = ({ products, id, number, from }) => {
   // const [productsColor, setProductsColor] = useState([]);
   // let arrayColors = [];
 
@@ -26,7 +26,7 @@ export const PictureContent = ({ products, id, number }) => {
   //   });
   // }, []);
 
-  return <Container>
+  return <Container from={from}>
     {
       products?.map((product, index) => !(index > number) ? (
         id ?

@@ -17,7 +17,7 @@ export const PictureItem = ({
   video
 }) => {
   const productsToAdd = useSelector((state) => state.cart.productsToAdd);
-  const selected = productsToAdd.find((productAdded) => productAdded.id === product.id);
+  const selected = productsToAdd.filter((productAdded) => productAdded.id === product.id);
   const dispatch = useDispatch();
   const [controls, setControls] = useState(false);
   const refVideo = useRef(null);
@@ -42,12 +42,18 @@ export const PictureItem = ({
   };
 
   const handleAddToCart = () => {
+    const copyProducts = JSON.parse(JSON.stringify(product));
+
+    copyProducts.width = inputWidthRef.current.value;
+    copyProducts.height = inputHeightRef.current.value;
+
     dispatch(changeProduct([
       ...productsToAdd,
-      product,
+      copyProducts,
     ]));
+    history.push("/cart");
   };
-  
+
   useEffect(() => {
     if (inputWidthRef.current && inputHeightRef.current) {
       inputWidthRef.current.value = product.width;
@@ -122,7 +128,7 @@ export const PictureItem = ({
                   }
                   <div className="flex">
                     <div>
-                      <p>Modifica el ancho de tu cuadro:</p>
+                      <p>Modifica el ancho de tu cuadro(medidas en cm):</p>
                       <Input
                         inputProps={{
                           type: "number",
@@ -136,7 +142,7 @@ export const PictureItem = ({
                       </Input>
                     </div>
                     <div>
-                      <p>Modifica el alto de tu cuadro:</p>
+                      <p>Modifica el alto de tu cuadro(medidas en cm):</p>
                       <Input
                         inputProps={{
                           type: "number",
@@ -150,7 +156,10 @@ export const PictureItem = ({
                       </Input>
                     </div>
                   </div>
-                  <Button disabled={selected} theme="primary" onClick={handleAddToCart}>Agregar al carrito</Button>
+                  <Button onClick={handleAddToCart}>Agregar al carrito</Button>
+                  {
+                    selected.length ? <span className="totalMe">Haz agregado {selected.length} {selected.length === 1 ? "cuadro" : "cuadros"} de {product.name}</span> : null
+                  }
                 </article>
               </div>
             </div>
@@ -160,7 +169,7 @@ export const PictureItem = ({
               <Title>Quizá te interese lo siguiente</Title>
             </div> : ""
           }
-          <PictureContent products={productRandoms} number={3} id={product.id}></PictureContent>
+          <PictureContent products={productRandoms} number={3} id={product.id} from="PictureItem"></PictureContent>
           <a onClick={handleBack} className="back">Atrás</a>
         </>
       }
