@@ -6,7 +6,7 @@ import { PictureComponent, Price } from ".";
 import { Title } from "../Title/index.jsx";
 import { Input } from "../Input/index.jsx";
 import { Button } from "../Button/index.jsx";
-import { MdBorderHorizontal, MdBorderVertical, MdPlayArrow } from "react-icons/md";
+import { MdBorderHorizontal, MdBorderVertical, MdKeyboardArrowRight, MdPlayArrow } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { changeProduct } from "../../features/cart/cartSlice";
 import { PictureContent } from "./index.jsx";
@@ -60,6 +60,7 @@ export const PictureItem = ({
       inputHeightRef.current.value = product.height;
     }
     setControls(false);
+    window.scrollTo(0, 0);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history.location.pathname]);
 
@@ -119,6 +120,11 @@ export const PictureItem = ({
                 {
                   product.offer && <p className="offerNewText">El cuadro {product.name} tiene una oferta del {product.offer}%</p>
                 }
+                {
+                  selected.length ? <Link to={{ pathname: "/cart", state: { productSelected: selected[0] }, }} className="totalMe">
+                    <span>Haz agregado {selected.length} {selected.length === 1 ? "cuadro" : "cuadros"} de {product.name}, Revisa {selected.length === 1 ? "este producto" : "estos productos"} aquí <MdKeyboardArrowRight size={20}></MdKeyboardArrowRight></span>
+                  </Link> : null
+                }
                 <article>
                   <Title>{product.name}</Title>
                   <p className="description">{product.description}</p>
@@ -157,9 +163,6 @@ export const PictureItem = ({
                     </div>
                   </div>
                   <Button onClick={handleAddToCart}>Agregar al carrito</Button>
-                  {
-                    selected.length ? <span className="totalMe">Haz agregado {selected.length} {selected.length === 1 ? "cuadro" : "cuadros"} de {product.name}</span> : null
-                  }
                 </article>
               </div>
             </div>

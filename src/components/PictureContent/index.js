@@ -10,7 +10,10 @@ export const Container = styled.ul`
 `;
 
 export const Price = styled.p`
-  ${(props) => props.offer ? `text-decoration: line-through;` : "text-decoration: none;"}
+  ${(props) => props.offer ? `
+    text-decoration: line-through;
+  ` : "text-decoration: none; font-weight: 600;"}
+  font-size: 15px;
 `;
 
 export const PictureComponent = styled.div`
@@ -25,6 +28,7 @@ export const PictureComponent = styled.div`
     box-shadow: 0px 3px 10px #00000029;
     height: fit-content;
     min-height: fit-content;
+    border-radius: 5px;
   }
   .back {
     color: var(--color-radioactive);
@@ -48,6 +52,10 @@ export const PictureComponent = styled.div`
     display: flex;
     justify-content: space-between;
     padding-bottom: 10px;
+    div {
+      width: 90%;
+      padding: 10px;
+    }
   }
   .articleVideo {
     padding: 0;
@@ -64,9 +72,16 @@ export const PictureComponent = styled.div`
   }
   .offer {
     color: var(--color-radioactive);
+    font-size: 15px;
+    font-weight: 600;
+  }
+  figure.bg {
+    border-radius: 5px 5px 0 0;
+    margin-bottom: -3px;
   }
   .bg {
     background-color: white;
+    border-radius: 5px;
   }
   .offer_radio {
     background-color: var(--color-bad);
@@ -92,6 +107,8 @@ export const PictureComponent = styled.div`
     align-items: start;
     justify-content: center;
     height: 100%;
+    max-width: 1800px;
+    margin: auto;
     video, img {
       max-width: 800px;
       min-width: 800px;
@@ -99,6 +116,7 @@ export const PictureComponent = styled.div`
       max-height: 380px;
       width: 100%;
       object-fit: contain;
+      border-radius: 0;
       background: #090d17;
     }
     /* .video_play {
@@ -122,6 +140,7 @@ export const PictureComponent = styled.div`
     .Container_All {
       display: flex;
       background-color: white;
+      border-radius: 5px;
       box-shadow: 0px 3px 10px #00000029;
       max-width: 100%;
       width: 100%;
@@ -184,12 +203,19 @@ export const PictureComponent = styled.div`
   }
   .totalMe {
     /* margin-left: 10px; */
-    font-size: 16px;
-    font-style: italic;
-    /* color: #4ba08f;
-    background: #55a6b4; */
-    padding: 14px;
-    color: var(--color-dark);
+    font-size: 12px;
+    /* font-style: italic; */
+    font-weight: 600;
+    color: var(--color-light);
+    background: var(--color-radioactive);
+    padding: 5px;
+    cursor: pointer;
+    display: block;
+    span {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
   img {
     max-width: 300px;
@@ -197,6 +223,8 @@ export const PictureComponent = styled.div`
     object-fit: cover;
     object-position: top;
     width: 100%;
+    border-radius: 5px 5px 0 0;
+    background: var(--color-dark);
   }
   @keyframes radioactive {
     0% {

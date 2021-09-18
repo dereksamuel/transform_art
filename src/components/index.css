@@ -33,6 +33,7 @@
 body {
   font-family: var(--font-1);
   background-color: var(--color-light);
+  scroll-behavior: smooth;
 }
 
 p {
@@ -96,11 +97,15 @@ a {
   min-height: calc(100vh - 139.95px);
 }
 
+.Picture {
+  background: linear-gradient(217deg, rgba(238, 32, 32, 0.8), rgba(0, 102, 255, 0.068) 70.71%), linear-gradient(127deg, rgba(53, 255, 53, 0.8), rgba(0, 255, 179, 0.116) 70.71%), linear-gradient(336deg, rgba(47, 47, 244, 0.8), rgba(0, 0, 255, 0.13) 70.71%);
+}
+
 .Cart {
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: 100px 1fr 100px;
+  grid-template-columns: 1fr 250px;
+  grid-template-rows: 60px 1fr 100px;
   align-items: flex-start;
 }
 
@@ -110,8 +115,9 @@ a {
   align-self: flex-end;
 }
 
-.Cart ul {
+.Cart table {
   grid-row: 2 / 3;
+  grid-column: 1 / 2;
 }
 
 .AboutUs {
@@ -120,6 +126,15 @@ a {
 
 h1, h2, h3 {
   color: var(--color-dark);
+}
+
+.Section {
+  padding: 16px;
+}
+
+.Section h3 {
+  margin: auto;
+  margin-bottom: 50px;
 }
 
 ::-webkit-scrollbar {

@@ -9,6 +9,7 @@ export const Text = styled.h3`
   font-size: ${({ color }) => color ? "12px" : "16px"};
   width: fit-content;
   border-radius: 90px 0px 90px 0px;
+  text-align: center;
 `;
 
 export const SubText = styled.h3`

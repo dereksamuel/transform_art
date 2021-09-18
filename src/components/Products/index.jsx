@@ -96,17 +96,19 @@ export const Products = ({ products }) => {
       offer: form.get("offer"),
       width: form.get("width"),
       height: form.get("height"),
+      type: form.get("type"),
     };
 
     if (
       !objectParam.name ||
       !objectParam.price ||
       !objectParam.width ||
+      !objectParam.type ||
       !objectParam.height
     ) {
       console.error("Se requieren ciertos datos para actualizar");
       setAlertMessage({
-        text: "Se requieren los campos: Nombre, precio, ancho, imágen y alto",
+        text: "Se requieren los campos: Nombre, precio, ancho, imágen, tipo de cuadro y alto",
         theme: "bad",
         title: "Error:",
       });

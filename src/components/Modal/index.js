@@ -78,12 +78,14 @@ export const ModalComponent = styled.div`
   }
   .d-flex-dk {
     display: flex;
+    align-items: center;
     p {
       padding: 15px;
       padding-top: 0;
       cursor: pointer;
       color: #adadad;
       text-decoration: underline;
+      margin: 0;
     }
   }
   figure.image {
@@ -113,7 +115,7 @@ export const ModalComponent = styled.div`
     align-items: center;
   }
   .container__input {
-    max-width: 210px;
+    max-width: 200px;
     margin: 0 5px;
     margin-top: 10px;
     button {
@@ -126,6 +128,10 @@ export const ModalComponent = styled.div`
   .content {
     padding: 15px;
   }
+  .maxOverlay {
+    max-height: 250px;
+    overflow-y: auto;
+  }
   @media screen and (max-width: 758px) {
     & {
       width: 100%;
@@ -137,6 +143,9 @@ export const ModalComponent = styled.div`
     .container__input {
       width: 100%;
       max-width: 100%;
+    }
+    .maxOverlay {
+      max-height: fit-content;
     }
   }
   @keyframes fadeInByY {

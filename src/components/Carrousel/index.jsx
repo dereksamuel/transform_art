@@ -14,10 +14,11 @@ export const Carrousel = ({ products }) => {
         for (const { target, isIntersecting } of entries) {
           if (isIntersecting) {
             // target.setAttribute("src", target.dataset.src)
-            target.setAttribute("style", "opacity: 1;")
-          } else {
-            target.setAttribute("style", "opacity: 0;")
+            target.setAttribute("style", "opacity: 1;");
           }
+          // } else {
+          //   target.setAttribute("style", "opacity: 0.3;")
+          // }
         }
       }, {
         rootMargin: "500px",

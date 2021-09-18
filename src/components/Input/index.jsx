@@ -20,7 +20,7 @@ export const Textarea = ({ txtProps, setValue, children, value, prependColors, b
   );
 };
 
-export const Input = ({ inputProps, setValue, children, value, prependColors, prependTWO, onClickOne, onClickTwo }) => {
+export const Input = ({ inputProps, setValue, children, value, prependColors, prependTWO, onClickOne, onClickTwo, prependOneTheme, prependTwoTheme }) => {
   const handleChangeInput = (event) => {
     setValue?.(event.target.value);
   };
@@ -43,14 +43,14 @@ export const Input = ({ inputProps, setValue, children, value, prependColors, pr
           <span className="checkmark"></span>
         </CheckBox> : <Label htmlFor={inputProps?.id || ""}>
           {
-            children && <Prepend prependColors={prependColors} onClick={onClickOne || function () {}}>{children}</Prepend>
+            children && <Prepend prependColors={prependOneTheme || prependColors} onClick={onClickOne || function () {}}>{children}</Prepend>
           }
           <input
             onChange={handleChangeInput}
             {...inputProps}
             value={value} />
           {
-            prependTWO && <Prepend prependColors={prependColors} className="last" onClick={onClickTwo || function () {}}>{prependTWO}</Prepend>
+            prependTWO && <Prepend prependColors={prependTwoTheme || prependColors} className="last" onClick={onClickTwo || function () {}}>{prependTWO}</Prepend>
           }
         </Label>
       }

@@ -45,7 +45,7 @@ export default function App() {
           <Route exact path="/login" component={() => <Login currentUser={currentUser} />} />
           <Route exact path="/pictures" component={() => <Picture editApp={editApp} />} />
           <Route exact path="/picture/:id" component={() => <PictureById editApp={editApp} />} />
-          <Route exact path="/cart" component={() => <Cart />} />
+          <Route exact path="/cart" component={() => <Cart editApp={editApp} />} />
           {
             currentUser ? (
               <Route exact path="/edit_app" component={() => <EditApp editApp={editApp} />} />

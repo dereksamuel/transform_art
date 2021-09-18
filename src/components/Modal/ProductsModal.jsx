@@ -38,6 +38,11 @@ export const ProductsModal = ({
     return fileGeneration;
   };
 
+  const handleChangePrice = (event) => {
+    //console.log(+event.target.value);
+    //event.target.value = new Intl.NumberFormat("es-ES").format(+event.target.value);
+  }
+
   useEffect(() => {
     return () => {
       if (timer) clearTimeout(timer);
@@ -80,6 +85,10 @@ export const ProductsModal = ({
                   onClick={() => setStatusTab("video")}
                 >Video e imágen</p>
               </div>
+              <div className="maxOverlay">
+
+              </div>
+              <div className="maxOverlay">
                 <div style={statusTab !== "information" ? { display: "none", } : { display: "block", }}>
                   <div className="input">
                     <Input
@@ -93,6 +102,19 @@ export const ProductsModal = ({
                       prependColors="white"
                     >
                       <MdModeEdit />
+                    </Input>
+                  </div>
+                  <div className="input">
+                    <Input
+                      inputProps={{
+                        type: "text",
+                        id: "type",
+                        defaultValue: modalInfo?.type,
+                        placeholder: "Tipo de cuadro",
+                        name: "type",
+                      }}
+                      prependColors="white"
+                    >
                     </Input>
                   </div>
                   <Textarea
@@ -111,6 +133,7 @@ export const ProductsModal = ({
                           min: "0",
                           placeholder: "Precio",
                           name: "price",
+                          onChange: handleChangePrice,
                           defaultValue: modalInfo?.price || "",
                         }}
                         prependColors="white"
@@ -126,7 +149,8 @@ export const ProductsModal = ({
                           id: "oferta",
                           placeholder: "Oferta",
                           name: "offer",
-                          defaultValue: modalInfo?.offer || "",
+                          onChange: handleChangePrice,
+                          defaultValue: new Intl.NumberFormat().format(modalInfo?.offer) || "",
                         }}
                         prependColors="white"
                       >
@@ -296,6 +320,7 @@ export const ProductsModal = ({
                     }
                   </div>
                 </div>
+              </div>
               <div className="d-flex buttons">
                 {
                   modalInfo && <DeleteButton modalInfo={modalInfo} disabled={loading || disabled} timer={timer} functionClick={handleDeleteProduct} />

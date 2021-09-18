@@ -2,14 +2,14 @@ import styled from "@emotion/styled";
 
 export const Prepend = styled.span`
   background-color: ${({ prependColors }) => {
-    return prependColors === "white" ? "var(--color-secondary)" : "var(--color-dark)";
+    return prependColors === "white" ? "var(--color-secondary)" : prependColors === "gray" ? "var(--color-gray)" : "var(--color-dark)";
   }};
   display: flex;
   align-items: center;
   border-radius: 12px 0px 0px 12px;
   padding: 0 20px;
   color: ${({ prependColors }) => {
-    return prependColors === "white" ? "var(--color-dark)" : "var(--color-light)";
+    return prependColors === "white" ? "var(--color-dark)" : prependColors === "gray" ? "var(--color-dark)" : "var(--color-light)";
   }};
   font-size: 20px;
   &.last {
@@ -40,6 +40,7 @@ export const Label = styled.label`
     min-height: 100px;
     max-height: 150px;
     min-width: 100%;
+    font-size: 13px;
   }
 
   input::-webkit-file-upload-button {
